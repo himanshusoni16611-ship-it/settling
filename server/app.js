@@ -32,7 +32,6 @@ app.use(bodyParser.json())
 
 
 app.use(express.static(buildpath));
-//@himanshusoni16611-ship-it = github
 app.use(cors({
   origin: [
     'http://localhost:3000',
