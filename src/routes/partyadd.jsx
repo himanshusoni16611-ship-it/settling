@@ -36,7 +36,7 @@ pnm,gnm,mob,jdate
 }
 
   try{
-    const response = await fetch('http://localhost:5000/partyadd',{
+    const response = await fetch('https://cute-beijinho-d62c23.netlify.app/partyadd',{
 method:'POST',
 headers:{
     'Content-Type':'application/json',
@@ -70,7 +70,7 @@ const alertdeelte = async (e, id) => {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`http://localhost:5000/partyadd/${id}`, {
+      const response = await fetch(`https://cute-beijinho-d62c23.netlify.app/partyadd/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
