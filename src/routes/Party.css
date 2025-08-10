@@ -1,0 +1,132 @@
+*{
+    margin:0;
+    padding: 0;
+}
+form {
+  margin-top: 1.5rem; /* ✅ Adds space between heading and inputs */
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* ✅ Adds vertical gap between all input groups */
+}
+
+.mypartyadd{
+background-color: whitesmoke;
+height: 79vh;
+width:97vw;
+display: flex;
+  justify-content: left;
+ 
+   align-items: flex-start;
+  padding: 2rem;
+}
+.party-form-container {
+  background-color: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 150vw;
+  max-width: 200vw;
+  height:70vh;
+}
+input[type="text"],
+input[type="number"] {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 5px rgba(0, 188, 212, 0.4);
+}
+.submit-btn {
+  padding: 0.7rem;
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.submit-btn:hover {
+  background-color: #0097a7;
+}
+
+.results {
+  background-color: #ffffff;
+  width: 80vw;
+  height: 70vh;
+  margin-left: 30px;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+  }
+
+.results h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+  margin-top: -12px;
+}
+
+.result-item {
+  padding: 0.75rem 1rem;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  transition: background 0.2s ease;
+  margin-top: -20px;
+
+}
+
+.result-item:hover {
+  background-color: #eef9f9;
+cursor: pointer;
+}
+
+.result-item strong {
+  font-size: 1rem;
+  color: #333;
+}
+
+.result-item button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.result-item button:hover {
+  background-color: #d32f2f;
+}
+label{
+  font-size: 32px;
+}
+h1 {
+  position: relative; /* or absolute, depending on context */
+  top: 0;
+  margin-bottom: 1rem; /* optional spacing */
+  margin-top: -4px;
+}

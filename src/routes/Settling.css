@@ -1,0 +1,263 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.myheading {
+  background-color: #89CFF0;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 1rem;
+  flex-direction: column-reverse;
+  gap: 1rem;
+  height: auto;
+  /* position: top; */ /* invalid, so removed */
+  margin-top: -29px;
+}
+
+.title {
+  font-size: 1.2rem;
+}
+
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+
+.input-group-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  position: relative; /* ✅ Add this */
+}
+
+.fparty,
+.cl_bal {
+  height: 2.5rem;
+  font-size: 1rem;
+  width: 100%;
+  
+}
+
+input[type="text"],
+input[type="date"],
+input[type="varchar"] {
+  font-family: 'Lucida Bright', 'Times New Roman', serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 35px;
+  width: 15vw;
+text-align: center;
+}
+
+input[type="number"] {
+  font-family: 'Lucida Bright', 'Times New Roman', serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 35px;
+  width: 10vw;
+  text-align: center;
+}
+
+input:focus {
+  background-color: #89CFF0;
+  color: black;
+}
+
+.dropdown {
+  background-color: #89CFF0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 100;
+}
+
+.dropdownt {
+  background-color: #89CFF0;
+  position: absolute;
+  bottom: 66%;
+  margin-left: 380px;
+  margin-bottom: 10px;
+  padding: 0;
+  list-style: none;
+  width: 17vw;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 100;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  font-family: 'Lucida Bright', 'Times New Roman', serif;
+  font-size: 1rem;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dropdown-item.hovered,
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+  color: blue;
+}
+
+.result {
+  height: 20vh;
+margin-top: -20px;
+}
+
+.footer {
+  width: 100vw;
+  background-color: #89CFF0;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: black;
+  z-index: 1000;
+  align-items: center;
+  height: 6vh;
+}
+
+.date {
+  font-family: "Lucida Bright", "Times New Roman", serif;
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+}
+
+.fparty-select {
+  width: 20vw; /* or any size you prefer */
+  font-size: 1.1rem;
+  font-family: 'Lucida Bright', 'Times New Roman', serif;
+}
+
+.fparty-select .react-select__control {
+  height: 2.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  width:200vw;
+}
+
+.submit_sett {
+  background-color:orange;
+  color: blue;
+  width: 3vw;
+  font-family: "Lucida Bright", "Times New Roman", serif;
+  font-weight: 80;
+  font-size: 20px;
+}
+.upd_sett{
+  background-color: #89CFF0;
+color: black;
+}
+/* Sticky Table Header Styles */
+thead.sett_head th {
+  position: sticky;
+  top: 0; /* Stick to the top of the scrolling container */
+  background-color: #89CFF0;
+  color: #000;
+  font-weight: bold;
+  font-size: 26px;
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+  z-index: 2;
+  white-space: nowrap;
+  margin-top: -1px;
+  min-height: 20vh;
+}
+
+thead.sett_head th:nth-child(1) {
+  min-width: 6vw;
+  min-height: 2vh;
+}
+
+
+thead.sett_head th:nth-child(2) {
+  min-width: 18vw;
+}
+
+thead.sett_head th:nth-child(3) {
+  min-width: 10vw;
+}
+
+thead.sett_head th:nth-child(4) {
+  min-width: 10vw;
+}
+
+thead.sett_head th:nth-child(5) {
+  min-width: 10vw;
+}
+
+thead.sett_head th:nth-child(6) {
+  min-width: 20vw;
+}
+
+thead.sett_head th:nth-child(7) {
+  min-width: 0vw;
+  width:2px;
+  min-width:.5px;
+}
+
+thead.sett_head th:nth-child(8) {
+  min-width: 2vw;
+}
+
+thead.sett_head th:nth-child(9) {
+  min-width: 1vw;
+  height: 2vh;
+}
+
+.sett_tbody {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Lucida Bright', 'Lucida Bright Demibold', 'Times New Roman', serif;
+  color: #2c3e50;
+  height: 10vh;
+  overflow-y: auto;
+cursor: pointer;
+}
+
+.table-wrapper {
+  max-height:77vh; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+
+.sparty {
+  width: 17vw;
+}
+tr:focus {
+  outline: none;
+  background-color: #d0f0ff; /* light blue */
+}
+.up_id {
+  position: absolute;
+  left: -9999px;
+  width: 1px; /* or any */
+  height: 1px;
+
+ 
+}

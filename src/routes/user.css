@@ -1,0 +1,65 @@
+/* Center the form and set a better background */
+.user_section {
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the login form */
+.loginform {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+}
+
+/* Label styling */
+.loginform label {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Input field styling */
+.loginform input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.loginform input:focus {
+  border-color: #74ebd5;
+  outline: none;
+}
+
+/* Button styling */
+.loginform button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #74ebd5;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginform button:hover {
+  background-color: #57c5d6;
+}
+
+/* Optional: Responsive tweaks */
+@media (max-width: 400px) {
+  .loginform {
+    width: 90%;
+    padding: 30px 20px;
+  }
+}

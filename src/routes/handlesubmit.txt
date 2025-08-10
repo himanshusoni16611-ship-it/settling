@@ -1,0 +1,88 @@
+const handleSubmit = async (e) => {
+  e.preventDefault();
+const tally = "";
+const debitValue = parseFloat(debit) || 0;
+const creditValue = parseFloat(credit) || 0;
+
+if(debitValue > 0 && creditValue > 0){
+  //alert("plz give one either debit or credit");
+    Swal.fire({
+    title:"plz give one either debit or credit",
+    text:"debit or credit both cant be empty",
+    icon:"warning",
+
+  })
+ 
+  return;
+
+}
+const payload = {
+    fparty,
+    date,
+    sparty,
+    debit,
+    credit,
+  narration,
+  tally,
+  };
+if(up_id){
+ try{ 
+  const response = await fetch(`http://localhost:5000/settlingentry/${up_id}`,{
+   method:'PUT',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify(payload),
+  });
+ const result = await response.json(); 
+ if (!response.ok) {
+        throw new Error(result.message || 'Update failed');
+      }
+           await fetchData();
+      Swal.fire({ title: 'Updated Successfully!', icon: 'success',timer:1000,showConfirmButton:false});
+      
+      setDebit('');
+      setCredit('');
+      setNarrattion('');
+      setup_id('');
+      setIsUpdating(false);
+}catch(err){
+console.error('Error updating data',err);
+ }
+  }else{
+  
+  try {
+    const response = await fetch('http://localhost:5000/settlingentry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json(); // 👈 parse JSON here
+
+    if (!response.ok) {
+      throw new Error(result.message || 'Submission failed');
+    }
+
+    if (result.latestId) {
+      setLatestEntryId(result.latestId); 
+    }
+
+    await fetchData(); // refetch data to render new entry
+    fpartyref.current.focus();
+    setDebit('');
+    setCredit('');
+    setNarrattion('');
+  } catch (err) {
+    console.error('Error sending data:', err);
+  }
+};
+}
+useEffect(() => {
+  const timer = setTimeout(() => {
+    if (latestEntryRef.current) {
+      latestEntryRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        latestEntryRef.current.focus();
+    
+    }
+  }, 200); 
+  return () => clearTimeout(timer);
+}, [latestEntryId, partyData.length]);

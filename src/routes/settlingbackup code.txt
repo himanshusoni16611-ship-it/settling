@@ -1,0 +1,510 @@
+import { useState, useEffect, useRef,useMemo } from 'react';
+import './Settling.css';
+import { useParty } from '../Context/partycontext';
+import {useLocation} from 'react-router-dom';
+
+
+const SettlingEntry = () => {
+  const { partyList } = useParty();
+  const [fparty, setFparty] = useState('');
+  const[sparty,setSparty] = useState('');
+const [date, setDate] = useState(() => {
+  const today = new Date();
+  return today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+});
+const location = useLocation();
+const queryParams = new URLSearchParams(location.search);
+  const gfparty = queryParams.get('fparty');
+// use state and all ref and memo are declard here
+  const dateRef = useRef(null);
+  const spartyRef = useRef(null);
+  const debitref = useRef(null);
+  const creditref = useRef(null);
+  const narrattionref = useRef(null);
+//get fparty
+
+  const [debit,setDebit] = useState('');
+  const [credit,setCredit] = useState('');
+  const [narration,setNarrattion] = useState('');
+  const [showDropdown,setShowDropdown] = useState(false);
+  const [showSDropdown,setShowSDropdown] = useState(false);
+  const [filteredSparties, setFilteredSparties] = useState([]);
+  const [hoverIndexS, setHoverIndexS] = useState(0);
+  const [latestEntryId, setLatestEntryId] = useState(null);
+  const latestEntryRef = useRef(null);
+ const [hoverIndex, setHoverIndex] = useState(0);
+  const [partyData, setPartyData] = useState([]);
+  
+
+function format_date(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const year = date.getUTCFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+
+
+console.log(gfparty);
+
+  //fparty sugge
+  const filteredParties = fparty
+    ? partyList.filter(p =>
+        p.pnm.toLowerCase().includes(fparty.toLowerCase())
+      )
+    : [];
+
+  useEffect(() => {
+
+    if (filteredParties.length > 0) {
+      const inputLower = fparty.trim().toLowerCase();
+      const bestMatchIndex = filteredParties.findIndex(p =>
+        p.pnm.toLowerCase().startsWith(inputLower)
+      );
+      const fallbackIndex = filteredParties.findIndex(p =>
+        p.pnm.toLowerCase().includes(inputLower)
+      );
+      setHoverIndex(
+        bestMatchIndex !== -1 ? bestMatchIndex : fallbackIndex !== -1 ? fallbackIndex : 0
+      );
+    }
+  }, [filteredParties, fparty]);
+
+  //for select dropdown name and get entries
+
+  const handleSelect = name => {
+    setFparty(name);
+    setShowDropdown(false);
+   fetchData();
+    setTimeout(() => {
+      dateRef.current?.focus();
+    }, 100);
+  };
+
+  const handleKeyDown = (e) => {
+  if (!showDropdown || filteredParties.length === 0) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    setHoverIndex(prev => {
+      const next = prev + 1;
+      return next >= filteredParties.length ? 0 : next;
+    });
+  }
+
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    setHoverIndex(prev => {
+      const next = prev - 1;
+      return next < 0 ? filteredParties.length - 1 : next;
+    });
+  }
+
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (hoverIndex >= 0 && filteredParties[hoverIndex]) {
+      handleSelect(filteredParties[hoverIndex].pnm);
+      setShowDropdown(false);
+    }
+  }
+};
+
+  const handleBlurOnEnter = () => {
+    const trimmedInput = fparty.trim().toLowerCase();
+    const exactMatch = partyList.find(p => p.pnm.toLowerCase() === trimmedInput);
+    if (exactMatch) {
+      handleSelect(exactMatch.pnm);
+    } else {
+      setShowDropdown(false);
+    }
+  };
+  //for focus next input
+const focusnextInput = (e,nextRef)=>{
+if(e.key === 'Enter'){
+  e.preventDefault();
+  nextRef.current?.focus();
+}
+}
+
+useEffect(()=>{
+  const input = sparty.trim().toLowerCase();
+  if(input){
+    const filtered = partyList.filter(p=>
+      p.pnm?.toLowerCase().includes(input));
+  setFilteredSparties(filtered);
+ setShowSDropdown(filtered.length > 0);
+  }else{
+    setFilteredSparties([]);
+    setShowSDropdown(false);
+  }
+  
+},[sparty,partyList]);
+
+ const handleSelects = (e,name,nextRef) => {
+  e.preventDefault();
+  
+    setSparty(name);
+    setShowSDropdown(false);
+ if(name === fparty){
+spartyRef.current?.focus(); 
+   
+}
+ else{   setTimeout(() => {
+      nextRef.current?.focus();
+    }, 100);
+}
+  };
+
+
+
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+const tally = "";
+  const payload = {
+    fparty,
+    date,
+    sparty,
+    debit,
+    credit,
+  narration,
+  tally,
+  };
+
+  try {
+    const response = await fetch('http://localhost:5000/settlingentry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json(); // 👈 parse JSON here
+
+    if (!response.ok) {
+      throw new Error(result.message || 'Submission failed');
+    }
+
+    if (result.latestId) {
+      setLatestEntryId(result.latestId); // ✅ correct way
+    }
+
+    await fetchData(); // refetch data to render new entry
+    setDebit('');
+    setCredit('');
+    setNarrattion('');
+  } catch (err) {
+    console.error('Error sending data:', err);
+  }
+};
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    if (latestEntryRef.current) {
+      latestEntryRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        latestEntryRef.current.focus();
+        dateRef.current.focus();
+ 
+    }
+  }, 200); 
+  return () => clearTimeout(timer);
+}, [latestEntryId, partyData.length]);
+
+///delete process entry//const is used for no one can change its value
+const delete_entry = async (txtnId) => {
+
+  try {
+    const response = await fetch(`http://localhost:5000/settlingentry/${txtnId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log('Delete success:',txtnId);
+      await fetchData(); // Make sure this function exists and is async if needed
+    fparty.current.focus();
+    } else {
+      console.error('Delete failed:', result.message);
+    }
+  } catch (err) {
+    console.error('Error during delete:', err); // ✅ fixed incorrect console.err
+  }
+};
+
+
+//modify process entry
+const modify_entry = async(e,_id) =>{
+  //alert(_id);
+e.preventDefault();
+try{
+  const response = await fetch(`http://localhost:5000/settlingentry/${_id}`,
+    {
+    method:'PUT',
+headers:{
+  'Content-Type':'application/json'
+},
+body:JSON.stringify(),
+  })
+
+  }catch(err){
+    console.error("error fetching id");
+  }
+}
+
+//my settling hovering through keydown
+const handlerowkeydown=(e,index,txtnId)=>{
+  e.preventDefault();
+  const rowCount = partyData.length;
+  console.log(rowCount);
+  if(e.key=== "ArrowDown"){
+    const nextIndex = (index + 1) < rowCount ? index + 1 : 0; // loop back to first row
+    const nextRow = document.querySelectorAll('#sett_tbody tr')[nextIndex];
+    nextRow?.focus();
+
+}else if(e.key==="ArrowUp"){
+    const previousIndex = (index-1) < rowCount ? index-1:0;
+  const previousRow = document.querySelectorAll('#sett_tbody tr')[previousIndex];
+    previousRow?.focus();
+  }else if(e.key==="Delete"){
+    delete_entry(txtnId);
+  }
+}
+
+ //fetchdata by name
+    const fetchData = async (party = fparty) => {
+      if (!party.trim()) {
+        setPartyData([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:5000/settlingentry?fparty=${encodeURIComponent(fparty)}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+         
+         if(Array.isArray(data)){
+           setPartyData(data);
+        
+         }
+             } else {
+          setPartyData('Error fetching data');
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setPartyData('Fetch failed');
+      }
+    };
+
+      
+//use memo is used for get data from memory
+
+  let runBal = 0;
+const closingBalance = useMemo(()=>{
+  return partyData.reduce((acc,entry)=>{
+    const dr = entry.debit||0;
+    const cr = entry.credit||0;
+    return acc+dr-cr;
+  },0);
+},[partyData]); 
+  return (
+    <form onSubmit={handleSubmit}>
+ 
+        <div className="myheading">
+          <div className="input-row">
+
+            <div className="input-group">
+
+
+              <label htmlFor="fparty">Party Name</label>
+              <input
+                className="fparty"
+                name="fparty"
+                id="fparty"
+                type="text"
+                value={fparty}
+                onChange={e => {
+                  setFparty(e.target.value);
+                  setShowDropdown(true);
+                }}
+                onFocus={() => {
+                  if (fparty.length > 0) setShowDropdown(true);
+                }}
+                onBlur={handleBlurOnEnter}
+                onKeyDown={handleKeyDown}
+                autoComplete="off"
+                placeholder="Search Party Name Here"
+              />
+              {showDropdown && filteredParties.length > 0 && (
+                <ul className="dropdown">
+                  {filteredParties.map((party, index) => (
+                    <li
+                      key={party._id}
+                      onMouseDown={() => handleSelect(party.pnm)}
+                      onMouseEnter={() => setHoverIndex(index)}
+                      className={`dropdown-item ${
+                        index === hoverIndex ? 'hovered' : ''
+                      }`}
+                    >
+                      {party.pnm}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+
+            <div className="input-group">
+              <label htmlFor="cl_bal">Closing Balance</label>
+              <input name="cl_bal" id="cl_bal" className="cl_bal" type="text" value={closingBalance} 
+              style={{color:closingBalance > 0?'blue':closingBalance < 0 ? 'red':'black',fontWeight:'bold'
+              }}readOnly/>
+            </div>
+            <h1>Settling Entry</h1>
+          </div>
+        </div>
+ <div className="result" id="result">
+      {partyData && partyData.length > 0 ? (
+        <div className="table-wrapper">
+          <table>
+            <thead className="sett_head" id="sett_head" name="sett_head">
+              <tr>
+                <th>Date</th>
+                <th>Party</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Balance</th>
+                <th>Narration</th>
+                <th>Tally</th>
+                <th>Delete</th>
+                <th>Modify</th>
+              </tr>
+            </thead>
+          <tbody className="sett_tbody" id="sett_tbody" >
+  {partyData.map((entry, index) => {
+    runBal += entry.debit - entry.credit;
+   const isLatest = entry._id === latestEntryId;
+
+    return (
+      <tr
+        key={entry._id || index}
+        ref={isLatest ? latestEntryRef : undefined}
+        tabIndex={0}
+        style={isLatest ? { backgroundColor: 'skyblue' } : {}}
+       onKeyDown={(e) => handlerowkeydown(e,index,entry.txtnId)}
+      >
+
+        <td>{format_date(entry.date)}</td>
+        <td>{entry.sparty}</td>
+        <td>{entry.debit}</td>
+        <td>{entry.credit}</td>
+        <td>{runBal}</td>
+        <td>{entry.narration}</td>
+        <td>{entry.tally}</td>
+        <td><button key={entry.txtnId} type='button' name='delete_entry' id='delete_entry' className='delete_entry' onClick={(e) => {
+  e.preventDefault();
+  delete_entry(entry.txtnId); // only pass txtnId
+}}
+>🗑️</button></td>
+
+        <td><button key={entry.txtnId} type='button' name='modify_entry' id='modify_entry' className='modify_entry' onClick={(e)=>modify_entry(e,entry.txtnId)}>✏️</button></td>
+      </tr>
+    );
+  })}
+</tbody>
+          </table>
+        </div>
+      ) : (
+        <p>No data</p>
+      )}
+    </div>
+  
+
+
+        <div className="footer">
+         <label>Date</label> 
+          <input type="date" name="date" id="date" className="date"  ref={dateRef} value={date} onChange = {(e) => setDate(e.target.value)} onKeyDown = {(e) => focusnextInput(e,spartyRef)}/>
+  <label htmlFor="sparty">Party</label>
+<input
+  type="text"
+  name="sparty"
+  id="sparty"
+  className="sparty"
+  value={sparty}
+  ref={spartyRef}
+  onChange={(e) => setSparty(e.target.value)}
+  autoComplete="off"
+  placeholder="Search Party Name"
+  onBlur={() => setTimeout(() => setShowSDropdown(false), 100)}
+  onFocus={() => {
+    if (sparty.trim().length > 0) setShowSDropdown(true);
+  }}
+  onKeyDown={(e)=>{
+    if(e.key === "ArrowDown"){
+      e.preventDefault();
+      setHoverIndexS(prev => (prev+1) % filteredSparties.length);
+    }else if(e.key === "ArrowUp"){
+      e.preventDefault();
+      setHoverIndexS(prev => (prev - 1 + filteredSparties.length) % filteredSparties.length);
+
+             }else if(e.key === "Enter"){
+              e.preventDefault();
+            if(filteredSparties[hoverIndexS]){
+              handleSelects(e,filteredSparties[hoverIndexS].pnm,debitref);
+            
+            }
+            }
+  }}
+/>
+
+{showSDropdown && filteredSparties.length > 0 && (
+  <ul className="dropdownt" id="dropdownt" name="dropdownt">
+
+    {filteredSparties.map((party, index) => (
+      <li
+        key={party._id || index}
+         className={`dropdown-item ${hoverIndexS === index ? 'hovered' : ''}`}
+        onMouseDown={() => {
+          setSparty(party.pnm);
+          setShowSDropdown(false);
+          setTimeout(()=>{
+            debitref.current.focus();
+          },100)
+        }}
+          onKeyDown={handleSelects}
+              
+      >
+        {party.pnm}
+      </li>
+    ))}
+  </ul>
+)}
+
+
+          Debit
+          <input type="number" className="debit" id="debit" name="debit" ref = {debitref} value = {debit} onChange = {(e)=>setDebit(e.target.value)}  onKeyDown={(e)=>focusnextInput(e,creditref)}/>
+          Credit
+          <input type="number" className="credit" id="credit" name="credit" ref={creditref} value = {credit} onChange = {(e)=>setCredit(e.target.value)} onKeyDown={(e)=>focusnextInput(e,narrattionref)}/>
+          Narration
+          <input type="text" className="narrattion" id="narrattion" name="narrattion" ref={narrattionref} value = {narration} onChange = {(e)=>setNarrattion(e.target.value)} />
+
+          <button className="submit_sett" name="submit_sett" id="submit_sett" type="submit">
+            Ok
+          </button>
+      
+        </div>
+    </form>
+  );
+};
+
+export default SettlingEntry;
