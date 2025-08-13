@@ -32,11 +32,10 @@ app.use(bodyParser.json())
 
 
 app.use(express.static(buildpath));
-//@himanshusoni16611-ship-it = github
 app.use(cors({
   origin: [
     'http://localhost:3000',
-  'https://ddrre.netlify.app/',
+  'https://cute-beijinho-d62c23.netlify.app/',
   ]
 }));
 const port = process.env.PORT||5000
