@@ -35,10 +35,9 @@ app.use(express.static(buildpath));
 app.use(cors({
   origin: [
     'http://localhost:3000',
-  'https://cute-beijinho-d62c23.netlify.app/',
   ]
 }));
-const port = process.env.PORT||5000
+const port = process.env.PORT||5000;
 
 
 

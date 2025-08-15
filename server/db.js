@@ -1,19 +1,24 @@
+
+
+
+
+
+
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const uri = "mongodb+srv://himanshusoni16611:mk50032266@cluster0.1r47w.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0";
 
-// Replace with your actual username and password
-const uri = 'mongodb+srv://mknewest:mk50032266@cluster0.ailv9vf.mongodb.net/test?retryWrites=true&w=majority';
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
-mongoose.connect(uri)
-  .then(() => console.log('✅ MongoDB connected successfully'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
-
-mongoose.connection.on('connected', () => {
-  console.log('🔌 Mongoose connection established.');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.error('⚠️ Mongoose connection error:', err);
-});
-
+async function run() {
+  try {
+    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+    await mongoose.connect(uri, clientOptions);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await mongoose.disconnect();
+  }
+}
+run().catch(console.dir);
 module.exports = mongoose;

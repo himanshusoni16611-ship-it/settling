@@ -36,7 +36,7 @@ pnm,gnm,mob,jdate
 }
 
   try{
-    const response = await fetch('https://cute-beijinho-d62c23.netlify.app/partyadd',{
+    const response = await fetch('http://localhost:5000/partyadd',{
 method:'POST',
 headers:{
     'Content-Type':'application/json',
@@ -70,15 +70,14 @@ const alertdeelte = async (e, id) => {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`https://cute-beijinho-d62c23.netlify.app/partyadd/${id}`, {
+      const response = await fetch(`http://localhost:5000/partyadd/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
 
       if (!response.ok) throw new Error('Failed to delete');
 
-      const data = await response.json();
-
+  
       Swal.fire({
         title: 'Deleted!',
         text: 'The party has been successfully deleted.',

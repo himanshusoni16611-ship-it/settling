@@ -9,7 +9,7 @@ export const PartyProvider = ({ children }) => {
 
   const fetchPartyList = async () => {
     try {
-      const response = await fetch('https://cute-beijinho-d62c23.netlify.app/partyadd', {
+      const response = await fetch('http://localhost:5000/partyadd', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
