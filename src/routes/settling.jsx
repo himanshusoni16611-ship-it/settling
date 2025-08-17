@@ -10,9 +10,7 @@ import propercase from '../functions/function';
 const SettlingEntry = () => {
   const { partyList } = useParty();
 const [fparty, setFparty] = useState(''); // selected party name (string)
-const [inputValue, setInputValue] = useState(''); // input text in Select
 const [sparty, setSparty] = useState('');       // selected party name (string)
-  const [inputValueSparty, setInputValueSparty] = useState('');
  
 const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
 // use state and all ref and memo are declard here
@@ -22,24 +20,17 @@ const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
   const creditref = useRef(null);
   const narrattionref = useRef(null);
   const fpartyref = useRef(null);
-//get fparty
 
-  const [debit,setDebit] = useState('');
+ const [debit,setDebit] = useState('');
   const [credit,setCredit] = useState('');
   const [narration,setNarrattion] = useState('');
-  const [showDropdown,setShowDropdown] = useState(false);
-  const [showSDropdown,setShowSDropdown] = useState(false);
-  const [filteredSparties, setFilteredSparties] = useState([]);
-  const [hoverIndexS, setHoverIndexS] = useState(0);
+ 
   const [latestEntryId, setLatestEntryId] = useState(null);
   const latestEntryRef = useRef(null);
- const [hoverIndex, setHoverIndex] = useState(0);
+
   const [partyData, setPartyData] = useState([]);
 const [up_id,setup_id] = useState();  
  const [isUpdating, setIsUpdating] = useState(false);
-const selectedOption = partyList
-    .map(p => ({ value: p.pnm, label: p.pnm }))
-    .find(opt => opt.value === sparty) || null;
 
  function format_date(dateString) {
   const date = new Date(dateString);
@@ -63,45 +54,6 @@ useEffect(() => {
 }, [fparty]);
 
 
-// ✅ Memoized filteredParties
-const filteredParties = useMemo(() => {
-  if (!fparty.trim()) return [];
-  const inputLower = fparty.toLowerCase();
-  return partyList.filter(p =>
-    p.pnm.toLowerCase().includes(inputLower)
-  );
-}, [fparty, partyList]);
-
-
-  useEffect(() => {
-
-    if (filteredParties.length > 0) {
-      const inputLower = fparty.trim().toLowerCase();
-      const bestMatchIndex = filteredParties.findIndex(p =>
-        p.pnm.toLowerCase().startsWith(inputLower)
-      );
-      const fallbackIndex = filteredParties.findIndex(p =>
-        p.pnm.toLowerCase().includes(inputLower)
-      );
-      setHoverIndex(
-        bestMatchIndex !== -1 ? bestMatchIndex : fallbackIndex !== -1 ? fallbackIndex : 0
-      );
-    }
-  }, [filteredParties, fparty]);
-
-  //for select dropdown name and get entries
-
-  const handleSelect = name => {
-    setFparty(name);
-    setShowDropdown(false);
-   fetchData();
-    setTimeout(() => {
-      dateRef.current?.focus();
-    }, 10);
-  };
-
-
-  //for focus next input
 function focusnextInput(e, currentRef, nextRef) {
   const isSelectOpen = currentRef?.current?.state?.menuIsOpen;
 
@@ -110,19 +62,6 @@ function focusnextInput(e, currentRef, nextRef) {
     nextRef?.current?.focus();
   }
 }
-
-useEffect(() => {
-    const input = sparty.trim().toLowerCase();
-    if (input) {
-      const filtered = partyList.filter((p) => p.pnm?.toLowerCase().includes(input));
-      setFilteredSparties(filtered);
-      setShowSDropdown(filtered.length > 0);
-    } else {
-      setFilteredSparties([]);
-      setShowSDropdown(false);
-    }
-  }, [sparty, partyList]);
-
 
 
 //handledebitchange for check debit value
@@ -252,7 +191,6 @@ if(deletepop.isConfirmed){
     if (response.ok) {
       console.log('Delete success:',txtnId);
       await fetchData(fparty); // Make sure this function exists and is async if needed
-   setHoverIndex(0);
     
   } else {
       console.error('Delete failed:', result.message);
@@ -415,34 +353,30 @@ const closingBalance = useMemo(()=>{
 
   <div className="input-row">
 
- {/* Group for Party Name */}
 <div className="input-group-row">
   PartyName
   <Select
     inputId="fparty"
     ref={fpartyref}
-    options={partyList.map(p => ({ value: p.pnm, label: propercase(p.pnm) }))}
-    value={partyList.find(p => p.pnm === fparty) ? { value: fparty, label: propercase(fparty) } : null}
-    inputValue={propercase(fparty)}
+    options={partyList.map(p => {
+      const pc = propercase(p.pnm);
+      return { value: pc, label: pc };
+    })}
+    value={fparty ? { value: fparty, label: fparty } : null}
     onInputChange={(input, { action }) => {
       if (action === 'input-change') {
-        setFparty(input);
+        setFparty(propercase(input)); // always store in propercase
       }
     }}
     onChange={(selected) => {
       if (selected) {
-        setFparty(selected.value);
-        setInputValue(selected.value);
-        fetchData(selected.value);
+        setFparty(selected.value);   // already propercase
+        fetchData(selected.value);   // pass propercase
       } else {
         setFparty('');
-        setInputValue('');
       }
     }}
     openMenuOnFocus={true}
-    onBlur={() => {
-      setInputValue(fparty);
-    }}
     onKeyDown={(e) => {
       focusnextInput(e, fpartyref, dateRef);
     }}
@@ -467,10 +401,8 @@ const closingBalance = useMemo(()=>{
     }}
     onFocus={(e) => e.target.select()}
   />
-
-
-
 </div>
+
 
 
     {/* Group for Closing Balance */}
@@ -597,37 +529,33 @@ const closingBalance = useMemo(()=>{
 <Select
   id="sparty"
   ref={spartyRef}
-  options={partyList.map(p => ({ value: p.pnm, label: propercase(p.pnm) }))}
-  value={partyList.find(p => p.pnm === sparty) ? { value: sparty, label: propercase(sparty) } : null}
-  inputValue={propercase(sparty)}
+  options={partyList.map(p => ({
+    value: p.pnm,
+    label: propercase(p.pnm),
+  }))}
+  value={
+    sparty
+      ? { value: sparty, label: propercase(sparty) }
+      : null
+  }
   onInputChange={(input, { action }) => {
     if (action === 'input-change') {
       setSparty(input);
     }
   }}
   onChange={(selected) => {
-    if (selected) {
-      setSparty(selected.value);
-    } else {
-      setSparty('');
-    }
+    setSparty(selected?.value || '');
   }}
   openMenuOnFocus={true}
-  onBlur={() => {
-    // Optional: any blur logic
-  }}
+  menuPlacement="top"
   onKeyDown={(e) => {
-    // Prevent focusing next input if fparty equals sparty
     if ((e.key === 'Enter' || e.key === 'Tab') && fparty === sparty) {
       e.preventDefault();
-      spartyRef.current.focus();
+      spartyRef.current?.focus();
       return;
     }
-
-    // Proceed to next input
     focusnextInput(e, spartyRef, debitref);
   }}
-  menuPlacement="top"
   styles={{
     menuPortal: base => ({ ...base, zIndex: 9999 }),
     menu: base => ({ ...base, zIndex: 9999 }),
@@ -636,11 +564,10 @@ const closingBalance = useMemo(()=>{
       minHeight: '40px',
       fontSize: '1rem',
       width: '18vw',
-      textAlign:'center',
+      textAlign: 'center',
     }),
   }}
- onFocus={(e)=>e.target.select()}
-
+  onFocus={(e) => e.target.select()}
 />
 
 
