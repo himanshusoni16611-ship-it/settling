@@ -2,8 +2,9 @@
 "installCommand":"npm install",
     "version": 2,
   "builds": [
-    { "src": "server/app.js", "use": "/node" },
-    { "src": "build/**", "use": "/static" }
+{ "src": "server/app.js", "use": "@vercel/node" },
+{ "src": "build/**", "use": "@vercel/static" }
+
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/server/app.js" },
