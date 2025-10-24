@@ -34,6 +34,7 @@ app.use(express.static(buildpath));
 app.use(cors({
   origin: [
     'http://localhost:3000',
+    'https://server-ufa1.onrender.com'
   ]
 }));
 const port = process.env.PORT||5000;
