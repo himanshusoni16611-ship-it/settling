@@ -14,7 +14,7 @@ const result = await Swal.fire({
 })
 if(!result.isConfirmed)return;
 try{
-const url = await fetch('https://server-ufa1.onrender.com/deleteall',{
+const url = await fetch("https://server-ufa1.onrender.com/deleteall",{
     method:'DELETE',
     headers:{
         'Content-Type':'application/json',
