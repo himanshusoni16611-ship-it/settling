@@ -9,7 +9,7 @@ export const PartyProvider = ({ children }) => {
 
   const fetchPartyList = async () => {
     try {
-      const response = await fetch('https://server-ufa1.onrender.com/partyadd', {
+      const response = await fetch('setling-fbdsfz-apbkdznfo-settlings.vercel.app/partyadd', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
