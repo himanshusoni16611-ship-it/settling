@@ -135,7 +135,7 @@ const handleSubmit = async (e) => {
     if (up_id == null) {
       // Add new entry
       try {
-        const response = await fetch('http://localhost:5000/settlingentry', {
+        const response = await fetch('https://server-ufa1.onrender.com/settlingentry', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -152,7 +152,7 @@ const handleSubmit = async (e) => {
     } else {
       // Update existing entry
       try {
-        const response = await fetch(`http://localhost:5000/settlingentry/${up_id}`, {
+        const response = await fetch(`https://server-ufa1.onrender.com/settlingentry/${up_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -184,7 +184,7 @@ cancelButtonText:'Cancel'
 
 if(deletepop.isConfirmed){
   try {
-    const response = await fetch(`http://localhost:5000/settlingentry/${txtnId}`, {
+    const response = await fetch(`https://server-ufa1.onrender.com/settlingentry/${txtnId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ cancelButtonText:'Cancel'
 })
 if(modipop.isConfirmed){
   try {
-    const response = await fetch(`http://localhost:5000/settlingentry/${txtnId}`, {
+    const response = await fetch(`https://server-ufa1.onrender.com/settlingentry/${txtnId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -302,7 +302,7 @@ const result = await Swal.fire({
 
 if(!result.isConfirmed)return;
   try{
-const response = await fetch(`http://localhost:5000/tally/${encodeURIComponent(fparty)}`,{
+const response = await fetch(`https://server-ufa1.onrender.com/tally/${encodeURIComponent(fparty)}`,{
 method:"POST",
 headers:{
   'Content-Type':'application/json',
@@ -329,7 +329,7 @@ console.error('Tally error:',error);
 
   try {
     const response = await fetch(
-      `http://localhost:5000/settlingentry?fparty=${encodeURIComponent(party)}`,
+      `https://server-ufa1.onrender.com?fparty=${encodeURIComponent(party)}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
