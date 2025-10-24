@@ -43,7 +43,7 @@ pnm,gnm,mob,jdate
 
   try{
 
-    const response = await fetch('setling-fbdsfz-apbkdznfo-settlings.vercel.app/partyadd',{
+    const response = await fetch('https://server-ufa1.onrender.com/partyadd',{
 method:'POST',
 headers:{
     'Content-Type':'application/json',
@@ -77,7 +77,7 @@ const alertdeelte = async (e, id) => {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`setling-fbdsfz-apbkdznfo-settlings.vercel.app/partyadd/${id}`, {
+      const response = await fetch(`https://server-ufa1.onrender.com/partyadd/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
