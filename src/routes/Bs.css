@@ -20,6 +20,7 @@ body {
   padding: 1rem;
   border-bottom: 2px solid #bdc3c7;
 height:8vh;
+
 }
 
 /* Container for both sides */
@@ -55,11 +56,12 @@ height:8vh;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 500;
   display: flex;
   justify-content: space-between;
 color: blue;
+border: 1px solid skyblue;
 }
 .rightnames {
 padding: 0.6rem 1rem;
@@ -68,11 +70,12 @@ padding: 0.6rem 1rem;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 500;
   display: flex;
   justify-content: space-between;
 color: red;
+border: 1px solid red;
 }
 .leftnames:hover, .rightnames:hover {
   background-color: #e8f0fe;
@@ -92,9 +95,11 @@ color: red;
   display: flex;
   justify-content: space-between;
   font-weight: bold;
-  padding: 8px 12px;
   background-color: #f0f0f0;
   border-bottom: 1px solid #ccc;
+position: fixed;
+width:44vw;
+margin-top: -20px;
 }
 
 .column-heading span:first-child {
@@ -107,3 +112,6 @@ color: red;
   text-align: right;
 }
 
+.buttons_section{
+ margin-top: -120px;
+}

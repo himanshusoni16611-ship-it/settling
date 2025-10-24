@@ -39,8 +39,11 @@ txtnId:{
 created: {
   type: Date,
   default: Date.now,  
-}
-
+},
+ time: {
+    type: String,
+    default: () => new Date().toLocaleTimeString("en-IN", { hour12: false })
+  }
 });
 
 

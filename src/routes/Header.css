@@ -1,13 +1,15 @@
 .header {
-  background-color: #1e1e2f;
+  background: linear-gradient(to right, #1e1e2f, #3a3a6a);
   color: white;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-width:97vw;
-height: 8vh;
+  width: 100vw;
+  margin-left:-22px;
+  height: 8vh;
 }
+
 
 .logo {
   font-size: 1.8rem;
@@ -39,4 +41,31 @@ text-decoration: none;
   background-color: whitesmoke;
   height: 5vh;
   margin-bottom:32px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;       /* stack logo + nav */
+    align-items: flex-start;      /* align to left */
+    height: auto;                 /* allow auto height */
+    padding: 1rem;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;          /* space below logo */
+  }
+
+  .nav-list {
+    flex-direction: column;       /* vertical nav */
+    gap: 1rem;
+    width: 100%;                  /* take full width */
+  }
+
+  .nav-list li {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+  }
 }

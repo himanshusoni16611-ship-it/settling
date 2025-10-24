@@ -1,0 +1,59 @@
+<div className="form-row">
+  <label>All comm trnfr</label>
+  <Select
+    ref={allcommtrnfref}
+    options={[
+      // Add empty option first
+      { value: "", label: "Select..." },
+      ...partylist.map((p) => ({
+        value: p.pnm,
+        label: propercase(p.pnm),
+      }))
+    ]}
+    value={alcommtrf ? { value: alcommtrf, label: propercase(alcommtrf) } : { value: "", label: "Select..." }}
+    onChange={(selected) => setalcommtrf(selected?.value || "")}
+    openMenuOnFocus={true}
+    isClearable={true}
+    isSearchable={true}
+    classNamePrefix="select"
+    menuPlacement="auto"
+    onBlur={() => console.log("Blurred, current value:", alcommtrf)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+
+        // Get the currently focused option from react-select's internal state
+        const selectInstance = allcommtrnfref.current;
+        if (selectInstance) {
+          const state = selectInstance.state;
+          
+          // If there's a focused option in the menu, use it
+          if (state.focusedOption) {
+            setalcommtrf(state.focusedOption.value);
+          } else {
+            // Otherwise, find the best match from input
+            const inputValue = state.inputValue?.toLowerCase() || "";
+            const match = partylist.find(p => p.pnm.toLowerCase().startsWith(inputValue));
+            if (match) setalcommtrf(match.pnm);
+          }
+        }
+
+        // move focus
+        focusnextinput(e, allcommtrnfref, typeofpref);
+      }
+    }}
+    styles={{
+      control: (base) => ({
+        ...base,
+        minHeight: "36px",
+        width: "250px",
+        textAlign: "center",
+        fontSize: "14px",
+      }),
+      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+      menu: (base) => ({ ...base, zIndex: 9999 }),
+      singleValue: (base) => ({ ...base, color: "#000", fontWeight: 500 }),
+    }}
+  />
+</div>
+

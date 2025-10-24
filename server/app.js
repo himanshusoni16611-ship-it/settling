@@ -27,7 +27,6 @@ const cors = require('cors')
 
 const app = express()
 
-//console.log(db);
 app.use(bodyParser.json())
 
 
@@ -65,13 +64,14 @@ app.post('/partyadd', async (req, res) => {
 
 app.get('/partyadd', async (req, res) => {
   try {
-    const allParties = await Party.find({}).select('pnm'); 
-    res.json(allParties); // ✅ Send the data as JSON
+    const sortedparties = await Party.find({}).sort({ pnm: 1 }); // ✅ Correct way
+    res.json(sortedparties);
   } catch (err) {
     console.error('Error fetching parties:', err);
     res.status(500).json({ error: 'Error fetching data' });
   }
 });
+
 app.delete('/partyadd/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -127,8 +127,8 @@ const Enteries=[
     debit:debit,
     credit:credit,
     narration,
-    tally,
-  },
+    tally
+    },
   {
     txtnId,
       date,  
@@ -137,15 +137,17 @@ const Enteries=[
     debit:credit,
     credit:debit,
     narration,
-tally,
+tally
+ 
   }
 ];
 const savedEntry = await Sett.insertMany(Enteries);
-console.log(savedEntry);  
+//for latest id for scrolling there but cant understand 
 const latest = savedEntry.find((e) => e.fparty === fparty);
 res.status(201).json({
       message: 'Cross entries saved successfully!',
       data: savedEntry,
+      //newest id coming which is inserting
       latestId : latest?._id
     });
   }catch(error){
@@ -164,7 +166,9 @@ app.get('/settlingentry', async (req, res) => {
       return res.status(400).json({ message: 'fparty query parameter is required' });
     }
     const results = await Sett.find({ fparty })
+    //selecting particular feilds
     .select('date sparty debit credit narration txtnId tally')
+      //oder by asc
     .sort({date:1,sparty:1});
     res.json(results);
   } catch (error) {
@@ -176,9 +180,10 @@ app.get('/settlingentry', async (req, res) => {
 
 app.delete('/settlingentry/:txtnId',async(req,res)=>{
   try{
-  // why here used param instead of id dought
+  // why here used param instead of id dought 
+  //here entries are deleting by dleetemany
     const { txtnId } = req.params;
-  console.log(txtnId);
+  
     const deleted = await Sett.deleteMany({txtnId});
     if(deleted){
 return res.status(200).json({ message: "Delete success", txtnId });
@@ -248,48 +253,48 @@ app.put('/settlingentry/:up_id', async (req, res) => {
   }
 });
 
-
-//aggregate is a powerful method in MongoDB used to process data and perform complex operations like filtering, grouping, sorting, and calculating totals.
-//It works by passing an aggregation pipeline, which is a sequence of stages that transform the data step-by-step.
-//Common stages include:
-//$match — filters documents
-
-//$group — groups documents by a key and calculates aggregates like sums, counts, averages
-
-//$sort — sorts results
-
-//$project — selects specific fields or computes new ones
-
 app.get('/balancesheet', async (req, res) => {
   try {
-    const results = await Sett.aggregate([
+    const result = await Sett.aggregate([
       {
-        $group: {               // <-- $group needs a dollar sign
-          _id: "$fparty",       // _id is the grouping key
+        $group: {
+          _id: "$fparty",
           totalDebit: { $sum: { $ifNull: ["$debit", 0] } },
           totalCredit: { $sum: { $ifNull: ["$credit", 0] } },
-                    
+          totalCount: { $sum: 1 },
+          
+          starCount: { $sum: { $cond: [{ $eq: ["$tally", "*"] }, 1, 0] } }
         }
-      }
+      },
+      { $sort: { _id: 1 } }
     ]);
 
-    const leftData = [];       // use camelCase and no commas here
-    const rightData = [];
+    console.log("Aggregation result:", JSON.stringify(result, null, 2));
 
-    results.forEach(({ _id, totalDebit, totalCredit }) => {
-      const netamt = totalDebit - totalCredit;
-      if (netamt > 0) {
-        leftData.push({ fparty:_id, netamt});
-      } else if (netamt < 0) {
-        rightData.push({ fparty:_id, netamt});
-      }
+    const creditData = [];
+    const debitData = [];
+
+    result.forEach(party => {
+      const netamt = party.totalDebit - party.totalCredit;
+      const record = {
+        fparty: party._id,
+        netamt,
+        star: party.totalCount === party.starCount ? "⭐" : ""
+      };
+      if (netamt > 0) creditData.push(record);
+      else if (netamt < 0) debitData.push(record);
+      else creditData.push(record);
     });
-    res.json({ leftData, rightData });
+
+    res.json({ credit: creditData, debit: debitData });
   } catch (err) {
     console.error("Error in /balancesheet:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
+
+
+
 
 app.post('/tally/:fparty',async(req,res)=>{
 try{
@@ -338,8 +343,15 @@ app.get(/.*/, (req, res) => {
 });
 
 
+// ✅ Export for Vercel
+module.exports = app;
 
-app.listen(port, () => {
-  console.log(`✅ Server running on port ${port}`);
-});
+
+// ✅ Run locally only if not in Vercel
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`✅ Server running locally on http://localhost:${port}`);
+  });
+}
+
 

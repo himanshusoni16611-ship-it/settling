@@ -22,5 +22,5 @@ jdate:{
     
 }
 })
-
+Party_schema.index({pnm:1});
 module.exports = mongoose.model('Party',Party_schema);

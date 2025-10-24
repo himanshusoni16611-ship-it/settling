@@ -4,14 +4,14 @@ import './Settling.css';
 import { useParty } from '../Context/partycontext';
 import Select from 'react-select';
 import propercase from '../functions/function';
-
+import {useLocation} from 'react-router-dom';
 
 
 const SettlingEntry = () => {
   const { partyList } = useParty();
 const [fparty, setFparty] = useState(''); // selected party name (string)
 const [sparty, setSparty] = useState('');       // selected party name (string)
- 
+ const location = useLocation();
 const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
 // use state and all ref and memo are declard here
   const dateRef = useRef(null);
@@ -43,8 +43,13 @@ const [up_id,setup_id] = useState();
 
 useEffect(()=>{
   fpartyref.current?.focus();
-  
+const locationparan = new URLSearchParams(location.search);
+const partyfrmqu = locationparan.get('fparty');
+if(partyfrmqu){
+  setFparty(partyfrmqu);
+}  
 },[]);
+
 useEffect(() => {
   if (fparty.trim()) {
     fetchData(fparty);
@@ -242,29 +247,45 @@ const fillform = (data) => {
   setDebit(data.debit || '');
   setCredit(data.credit || '');
   setNarrattion(data.narration || '');
-
 };
 
-//my settling hovering through keydown
-const handlerowkeydown=(e,index,txtnId)=>{
-  e.preventDefault();
-  const rowCount = partyData.length;
-  console.log(rowCount);
-  if(e.key=== "ArrowDown"){
-    const nextIndex = (index + 1) < rowCount ? index + 1 : 0; 
-    const nextRow = document.querySelectorAll('#sett_tbody tr')[nextIndex];
-    nextRow?.focus();
-
-}else if(e.key==="ArrowUp"){
-    const previousIndex = (index-1) < rowCount ? index-1:0;
-  const previousRow = document.querySelectorAll('#sett_tbody tr')[previousIndex];
-    previousRow?.focus();
-  }else if(e.key==="Delete"){
-    delete_entry(txtnId);
-  }else if(e.key==="F2"){
-    modify_entry(txtnId);
+// my settling hovering through keydown
+const handlerowkeydown = (e, index, txtnId) => {
+  if (["ArrowDown", "ArrowUp", "Delete", "F2", "F3"].includes(e.key)) {
+    e.preventDefault();
   }
-}
+
+  const rows = document.querySelectorAll('#sett_tbody tr');
+  const rowCount = rows.length;
+  if (rowCount === 0) return;
+
+  if (e.key === "ArrowDown") {
+    const nextIndex = (index + 1) < rowCount ? index + 1 : 0;
+    const nextRow = rows[nextIndex];
+    nextRow?.focus();
+    nextRow?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  } else if (e.key === "ArrowUp") {
+    const previousIndex = index > 0 ? index - 1 : rowCount - 1;
+    const prevRow = rows[previousIndex];
+    prevRow?.focus();
+    prevRow?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  } else if (e.key === "Delete") {
+    delete_entry(txtnId);
+
+  } else if (e.key === "F2") {
+    modify_entry(txtnId);
+
+  } else if (e.key === "F3") {
+    if (rowCount > 0) {
+      const lastRow = rows[rowCount - 1];
+      lastRow?.focus();
+      lastRow?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }
+};
+
 
 //process tally
 const Process_tally = async(e,fparty)=>{
@@ -352,8 +373,7 @@ const closingBalance = useMemo(()=>{
 />
 
   <div className="input-row">
-
-<div className="input-group-row">
+  <div className="input-group-row">
   PartyName
   <Select
     inputId="fparty"
@@ -362,48 +382,45 @@ const closingBalance = useMemo(()=>{
       const pc = propercase(p.pnm);
       return { value: pc, label: pc };
     })}
-    value={fparty ? { value: fparty, label: fparty } : null}
+    value={partyList
+      .map(p => ({ value: propercase(p.pnm), label: propercase(p.pnm) }))
+      .find(opt => opt.value === fparty) || null
+    }
     onInputChange={(input, { action }) => {
-      if (action === 'input-change') {
-        setFparty(propercase(input)); // always store in propercase
-      }
+      if (action === 'input-change') setFparty(propercase(input));
     }}
     onChange={(selected) => {
       if (selected) {
-        setFparty(selected.value);   // already propercase
-        fetchData(selected.value);   // pass propercase
-      } else {
-        setFparty('');
-      }
+        setFparty(selected.value);
+        fetchData(selected.value);
+      } else setFparty('');
     }}
-    openMenuOnFocus={true}
+    openMenuOnFocus
     onKeyDown={(e) => {
-      focusnextInput(e, fpartyref, dateRef);
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const inputValue = fparty.trim().toLowerCase();
+
+        const bestMatch = partyList
+          .map(p => propercase(p.pnm))
+          .find(val => val.toLowerCase().startsWith(inputValue));
+
+        if (bestMatch) {
+          setFparty(bestMatch);
+          fetchData(bestMatch);
+          focusnextInput(e, fpartyref, dateRef);
+        }
+      }
     }}
     styles={{
       menuPortal: base => ({ ...base, zIndex: 9999 }),
       menu: base => ({ ...base, zIndex: 9999 }),
-      control: base => ({
-        ...base,
-        minHeight: '40px',
-        fontSize: '1rem',
-        width: '18vw',
-      }),
-      singleValue: base => ({
-        ...base,
-        textAlign: 'center',
-        width: '100%',
-      }),
-      input: base => ({
-        ...base,
-        textAlign: 'center',
-      }),
+      control: base => ({ ...base, minHeight: '40px', fontSize: '1rem', width: '18vw', textAlign: 'center' }),
+      singleValue: base => ({ ...base, textAlign: 'center' }),
+      input: base => ({ ...base, textAlign: 'center' }),
     }}
-    onFocus={(e) => e.target.select()}
   />
 </div>
-
-
 
     {/* Group for Closing Balance */}
     <div className="input-group-row">
@@ -460,26 +477,17 @@ const closingBalance = useMemo(()=>{
     </div>
   </div>
 </div>
- <div className="result" id="result">
+
       {partyData && partyData.length > 0 ? (
-        <div className="table-wrapper">
+        <div className="table-wrapper" id="table-wrapper" name="table-wrapper">
+          
           <table>
-            <thead className="sett_head" id="sett_head" name="sett_head">
-              <tr className='sett_headr' id="sett_headr" name="sett_header">
-                <th>Date</th>
-                <th>Party</th>
-                <th>Debit</th>
-                <th>Credit</th>
-                <th>Balance</th>
-                <th>Narration</th>
-                <th>Tally</th>
-                <th>Delete</th>
-                <th>Modify</th>
-              </tr>
-            </thead>
-          <tbody className="sett_tbody" id="sett_tbody" >
+          <thead><tr><th>Date</th><th>PartyName</th><th>Debit</th><th>Credit</th><th>Balance</th><th>Narrattion</th><th>T</th><th>Delete</th><th>Modify</th></tr></thead>  
+          <tbody className="sett_tbody" id="sett_tbody" name="sett_tbody">
   {partyData.map((entry, index) => {
     runBal += entry.debit - entry.credit;
+   
+    const balanceColor = runBal > 0 ? "blue" : runBal < 0 ? "red":"black"; 
    const isLatest = entry._id === latestEntryId;
 
     return (
@@ -491,13 +499,13 @@ const closingBalance = useMemo(()=>{
        onKeyDown={(e) => handlerowkeydown(e,index,entry.txtnId)}
       >
 
-        <td>{format_date(entry.date)}</td>
-        <td>{entry.sparty}</td>
-        <td>{entry.debit}</td>
-        <td>{entry.credit}</td>
-        <td>{runBal}</td>
-        <td>{entry.narration}</td>
-        <td>{entry.tally}</td>
+        <td className='datetdr' id='datetdr' name='datetdr'>{format_date(entry.date)}</td>
+        <td className='spartytdr' name='spartytdr' id='spartytdr'>{entry.sparty}</td>
+        <td className='debit' name='debit' id='debit'>{entry.debit}</td>
+        <td className='credit' name='credit' id='credit'>{entry.credit}</td>
+        <td className='runbal' name='runbal' id='runbal' style={{color:balanceColor}}>{runBal}</td>
+        <td className='narrattion' id='narrattion' name='narrattion'>{entry.narration}</td>
+        <td className='tally' name='tally' id='tally'>{entry.tally}</td>
         <td><button key={entry.txtnId} type='button' name='delete_entry' id='delete_entry' className='delete_entry' onClick={(e) => {
   e.preventDefault();
   delete_entry(entry.txtnId); // only pass txtnId
@@ -517,15 +525,14 @@ const closingBalance = useMemo(()=>{
       ) : (
         <p>No data</p>
       )}
-    </div>
+   
   
 
 
         <div className="footer">
-         <label>Date</label> 
+         Date
           <input type="date" name="date" id="date" className="date"  ref={dateRef} value={date} onChange = {(e) => setDate(e.target.value)} onKeyDown = {(e) => focusnextInput(e,dateRef,spartyRef)}/>
-
-<label>Party</label>
+Party
 <Select
   id="sparty"
   ref={spartyRef}
@@ -546,15 +553,31 @@ const closingBalance = useMemo(()=>{
   onChange={(selected) => {
     setSparty(selected?.value || '');
   }}
-  openMenuOnFocus={true}
+  openMenuOnFocus
   menuPlacement="top"
   onKeyDown={(e) => {
-    if ((e.key === 'Enter' || e.key === 'Tab') && fparty === sparty) {
+    if (e.key === 'Enter' || e.key === 'Tab') {
       e.preventDefault();
-      spartyRef.current?.focus();
-      return;
+
+      const inputValue = sparty.trim().toLowerCase();
+
+      // find first match using startsWith
+      const bestMatch = partyList
+        .map(p => p.pnm)
+        .find(p => p.toLowerCase().startsWith(inputValue));
+
+      if (bestMatch) {
+        setSparty(bestMatch);
+      }
+
+      // prevent moving if fparty === sparty
+      if (fparty === bestMatch) {
+        spartyRef.current?.focus();
+        return;
+      }
+
+      focusnextInput(e, spartyRef, debitref);
     }
-    focusnextInput(e, spartyRef, debitref);
   }}
   styles={{
     menuPortal: base => ({ ...base, zIndex: 9999 }),
@@ -569,6 +592,7 @@ const closingBalance = useMemo(()=>{
   }}
   onFocus={(e) => e.target.select()}
 />
+
 
 
 

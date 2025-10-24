@@ -1,0 +1,17 @@
+.dl_all_container{
+    background-color: aliceblue;
+    width:96.5vw;
+    margin-top: 5px;
+    height:100%;
+}
+.delete_btn{
+    background-color: red;
+    color:whitesmoke;
+height:30px;
+width:250px;
+border:1px;
+border-radius: 2%;
+font-family: 'Lucida Bright', 'Lucida Bright Demibold', 'Times New Roman', serif;
+font-weight: 600;
+
+}

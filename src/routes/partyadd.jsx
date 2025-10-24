@@ -1,5 +1,5 @@
 //development enviroment
-import { useState,useRef} from 'react';
+import { useState,useRef, useEffect} from 'react';
 import './Party.css';
 import { useParty } from '../Context/partycontext';
 //import { useNavigate } from 'react-router-dom';
@@ -20,14 +20,20 @@ const jdRef = useRef(null);
 
 const {partyList,fetchPartyList}= useParty();
 
+const nextinput = (e, nextRef) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
 
-const nextinput=(e,nextRef)=>{
-if(e.key === 'Enter'){
-e.preventDefault();
-    nextRef.current.focus();
-}
-
+    // ✅ Only check pnmRef once
+    if (pnmRef.current && pnmRef.current.value.trim() !== '') {
+      nextRef.current?.focus();
+    } else {
+      pnmRef.current?.focus();
+    }
+  }
 };
+
+
 
 const Submitform = async(e)=>{
   e.preventDefault();
@@ -95,10 +101,13 @@ const alertdeelte = async (e, id) => {
     }
   }
 };
+useEffect(() => {
+    pnmRef.current.focus();
+  }, []);
     return (
     <section className="mypartyadd" id="mypartyadd" name="mypartyadd">
       <div className="party-form-container">
-        <h1>Party ADD/DELETE</h1>
+        <div className='party_head' name='party_head' id='party_head'><h1>Party Add/Delete</h1></div>
         <form onSubmit={Submitform}>
           <div className="form-group">
             <label htmlFor="pnm">Party Name:</label>
@@ -110,27 +119,26 @@ const alertdeelte = async (e, id) => {
           </div>
           <div className="form-group">
             <label htmlFor="mob">Mobile:</label>
-            <input type="number" name="mob" id="mob" ref={mobRef} value={mob} onChange={(e)=>setMob(e.target.value)} onKeyDown={(e)=>nextinput(e,jdRef)}  className="input-field" placeholder="Enter Mobile Here..." />
+            <input type="text" name="mob" id="mob" ref={mobRef} value={mob} onChange={(e)=>setMob(e.target.value)} onKeyDown={(e)=>nextinput(e,jdRef)}  className="input-field" placeholder="Enter Mobile Here..." />
           </div>
           <div className="form-group">
             <label htmlFor="mob">Jdate:</label>
             <input type="date" name="jdate" id="jdate" ref={jdRef} value={jdate} onChange={(e)=>setJdate(e.target.value)}  className="input-field" placeholder="Enter Date Here......." />
           </div>
        
-          <button className="submit-btn">OK</button>
+          <button className="submit-btn" Name="submit-btn" id="submit-btn">OK</button>
         </form>
       </div>
-     <div className="results" id="results">
-        <h3>Party List</h3>
+     <div className="results" id="results"> 
+        <div className='party_head' name='party_head' id='party_head'><h1>PartyList</h1></div>      
         {partyList.length === 0 ? (
           <p>No results found</p>
         ) : (
           partyList.map((item, index) => (
           <div key={index} className="result-item" id="result-item" name="result-item">
-  <div className="party-entry">
-    <strong>{item.pnm}</strong>
-    <button onClick={(e) => alertdeelte(e, item._id)}>Delete</button>
-  </div>
+  <div className="party-entry" id="party-entry" name="party-entry">
+    <strong><tr>{item.pnm}</tr></strong>
+  <button onClick={(e) => alertdeelte(e, item._id)} className='dl_bt' id='dl_bt' name='dl_bt'>Delete</button></div>
 </div>
 
           ))

@@ -24,6 +24,7 @@ function Login() {
         name="username"
         id="username"
         className="username"
+autoComplete="off"
         required
       />
       <label>Password</label>
@@ -34,6 +35,7 @@ function Login() {
         name="password"
         id="password"
         className="pass"
+        autoComplete="off"
         required
       />
       <button type="submit">Login</button>

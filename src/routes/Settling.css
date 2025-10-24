@@ -7,14 +7,23 @@
   background-color: #89CFF0;
   font-size: 1rem;
   font-weight: bold;
-  padding: 1rem;
-  flex-direction: column-reverse;
-  gap: 1rem;
-  height: auto;
-  /* position: top; */ /* invalid, so removed */
-  margin-top: -29px;
+margin-top: -24px;
+width:97vw;
+height:6vh
+}
+.header-row {
+  display: flex;
+  gap: 8rem; /* space between items */
+margin: space-between;
 }
 
+.header-item {
+ /* each takes equal width */
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+
+}
 .title {
   font-size: 1.2rem;
 }
@@ -24,6 +33,13 @@
   flex-wrap: wrap;
   gap: 2rem;
   align-items: flex-start;
+}
+.table-wrapper {
+  max-height: 70vh;   /* optional, if you want scrolling */
+  overflow-y: auto;   /* make it scrollable */
+  /* space for footer */
+  padding-bottom: 1vh; /* prevents hiding */
+margin-top: -17px;
 }
 
 
@@ -120,10 +136,7 @@ input:focus {
   color: blue;
 }
 
-.result {
-  height: 20vh;
-margin-top: -20px;
-}
+
 
 .footer {
   width: 100vw;
@@ -137,7 +150,9 @@ margin-top: -20px;
   color: black;
   z-index: 1000;
   align-items: center;
+  
   height: 6vh;
+  padding-top: 0px;
 }
 
 .date {
@@ -169,66 +184,13 @@ margin-top: -20px;
   font-size: 20px;
 }
 .upd_sett{
-  background-color: #89CFF0;
+  background-color:orange;
 color: black;
+height:30px;
+width:70px;
+font-size: large;
 }
 /* Sticky Table Header Styles */
-thead.sett_head th {
-  position: sticky;
-  top: 0; /* Stick to the top of the scrolling container */
-  background-color: #89CFF0;
-  color: #000;
-  font-weight: bold;
-  font-size: 26px;
-  padding: 10px 8px;
-  text-align: center;
-  border-bottom: 2px solid #ccc;
-  z-index: 2;
-  white-space: nowrap;
-  margin-top: -1px;
-  min-height: 20vh;
-}
-
-thead.sett_head th:nth-child(1) {
-  min-width: 6vw;
-  min-height: 2vh;
-}
-
-
-thead.sett_head th:nth-child(2) {
-  min-width: 18vw;
-}
-
-thead.sett_head th:nth-child(3) {
-  min-width: 10vw;
-}
-
-thead.sett_head th:nth-child(4) {
-  min-width: 10vw;
-}
-
-thead.sett_head th:nth-child(5) {
-  min-width: 10vw;
-}
-
-thead.sett_head th:nth-child(6) {
-  min-width: 20vw;
-}
-
-thead.sett_head th:nth-child(7) {
-  min-width: 0vw;
-  width:2px;
-  min-width:.5px;
-}
-
-thead.sett_head th:nth-child(8) {
-  min-width: 2vw;
-}
-
-thead.sett_head th:nth-child(9) {
-  min-width: 1vw;
-  height: 2vh;
-}
 
 .sett_tbody {
   text-align: center;
@@ -236,14 +198,12 @@ thead.sett_head th:nth-child(9) {
   font-weight: 600;
   font-family: 'Lucida Bright', 'Lucida Bright Demibold', 'Times New Roman', serif;
   color: #2c3e50;
-  height: 10vh;
-  overflow-y: auto;
-cursor: pointer;
+ cursor: pointer;
+
 }
 
-.table-wrapper {
-  max-height:77vh; /* Adjust this value as needed */
-  overflow-y: auto;
+tr{
+  background-color:#FFF8DC;
 }
 
 .sparty {
@@ -260,4 +220,44 @@ tr:focus {
   height: 1px;
 
  
+}
+
+.datetdr{
+  width:13vw;
+}
+.spartytdr{
+  width:20vw;
+}
+.debit{
+  width:10vw;
+}
+.credit{
+  width:10vw;
+}
+.runbal{
+  width:15vw;
+}
+.narrattion{
+  width:20vw;
+}
+.tally{
+  width:3vw;
+}
+td{
+  border: 1px solid black;
+}
+th{
+border: 1px solid black;
+background-color: #89CFF0;
+}
+thead{
+  position:sticky;
+top: 0;  
+
+}
+.table-wrapper {
+  max-height: calc(83.5vh - 6vh);
+  overflow-y: auto;
+  position: relative;
+  padding-bottom: 0.5vh; /* minimal safe space */
 }

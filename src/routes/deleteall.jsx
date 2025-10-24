@@ -1,4 +1,6 @@
+import React from 'react';
 import Swal from 'sweetalert2';
+import './deleetall.css';
 const Deleteall = () => {
   // Function should be declared outside the return
   const hnddelete_All = async() => {
@@ -30,8 +32,11 @@ console.error('Delete all error:', err);
 
   return (
     <>
-      <h1>DELETE ALL</h1>
-      <button onClick={hnddelete_All}>DELETE RECORDS</button>
+    
+    <div className='dl_all_container' id='dl_all_container' name='dl_all_container'>
+      <h1>DELETE ALL Records</h1>
+      <button onClick={hnddelete_All} className='delete_btn' id='delete_btn' name='delete_btn'>DELETE RECORDS</button>
+    </div>
     </>
   );
 };

@@ -3,30 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import './Bs.css';
 
 const Bs = () => {
-  console.clear();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   const getreq = async () => {
     try {
-      const response = await fetch('http://localhost:5000/balancesheet', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const response = await fetch('http://localhost:5000/balancesheet');
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      const json = await response.json();
 
-      if (response.ok) {
-        const json = await response.json();
+      // Combine credit and debit with side info
+      const combined = [
+        ...(json.credit || []).map(item => ({
+          ...item,
+          side: 'left',
+          netamt: Number(item.netamt),
+          isTallied: item.star === "⭐"
+        })),
+        ...(json.debit || []).map(item => ({
+          ...item,
+          side: 'right',
+          netamt: Number(item.netamt),
+          isTallied: item.star === "⭐"
+        }))
+      ];
 
-        const combined = [
-          ...json.leftData.map(item => ({ ...item, side: 'left' })),
-          ...json.rightData.map(item => ({ ...item, side: 'right' })),
-        ];
-        setData(combined);
-      } else {
-        console.warn('Failed to fetch data:', response.status);
-      }
+      console.log("Combined data:", combined);
+      setData(combined);
+
     } catch (err) {
-      console.error('Error fetching balance sheet: ' + err);
+      console.error('Error fetching balance sheet:', err);
     }
   };
 
@@ -38,64 +44,65 @@ const Bs = () => {
     navigate(`/settlingentry?fparty=${encodeURIComponent(fparty)}`);
   };
 
-  // ✅ Total calculations
-  const leftTotal = data
-    .filter(item => item.side === 'left')
-    .reduce((acc, item) => acc + (parseFloat(item.netamt) || 0), 0);
+  // Totals
+  const leftTotal = data.filter(item => item.side === 'left')
+                        .reduce((acc, item) => acc + item.netamt, 0);
+  const rightTotal = data.filter(item => item.side === 'right')
+                         .reduce((acc, item) => acc + item.netamt, 0);
 
-  const rightTotal = data
-    .filter(item => item.side === 'right')
-    .reduce((acc, item) => acc + (parseFloat(item.netamt) || 0), 0);
+  const printBalance = () => alert("Print working");
 
   return (
     <>
       <div className="bs-container">Balance Sheet</div>
 
       <div className="both_s_contain">
-        <div className='heading_container' id='heading_container' name='heading_container'></div>
-        
+
+        {/* LEFT SIDE */}
         <div className="data_left">
-         <div className="column-heading">
-          <span>Party Name</span>
-          <span>Amount</span>
-        </div>
+          <div className="column-heading">
+            <span>Party Name</span>
+            <span>Amount</span>
+            <span>Tally</span>
+          </div>
           <ul>
-            {data
-              .filter(item => item.side === 'left')
-              .map((item, index) => (
-                <li
-                  className="leftnames"
-                  key={index}
-                  onClick={() => gotonext(item.fparty)}
-                >
-                  <span>{item.fparty}</span><span>{item.netamt}</span>
-                </li>
-              ))}
+            {data.filter(item => item.side === 'left').map((item, index) => (
+              <li key={index} className={`leftnames ${item.isTallied ? 'tallied' : ''}`}
+                  onClick={() => gotonext(item.fparty)}>
+                <span>{item.fparty}</span>
+                <span>{item.netamt}</span>
+                <span>{item.star ? '⭐' : ''}</span>
+              </li>
+            ))}
           </ul>
-          <div className="total" id="total" name="total">Total: ₹{leftTotal}</div>
+          {leftTotal > 0 && <div className="total" style={{ color: "blue" }}>Total: ₹{leftTotal}</div>}
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT SIDE */}
         <div className="data_right">
-        <div className="column-heading">
-          <span>Party Name</span>
-          <span>Amount</span>
-        </div>
+          <div className="column-heading">
+            <span>Party Name</span>
+            <span>Amount</span>
+            <span>Tally</span>
+          </div>
           <ul>
-            {data
-              .filter(item => item.side === 'right')
-              .map((item, index) => (
-                <li
-                  className="rightnames"
-                  key={index}
-                  onClick={() => gotonext(item.fparty)}
-                >
-                  <span>{item.fparty}</span><span>{item.netamt}</span>
-                </li>
-              ))}
+            {data.filter(item => item.side === 'right').map((item, index) => (
+              <li key={index} className={`rightnames ${item.isTallied ? 'tallied' : ''}`}
+                  onClick={() => gotonext(item.fparty)}>
+                <span>{item.fparty}</span>
+                <span>{item.netamt}</span>
+                <span>{item.star ? '⭐' : ''}</span>
+              </li>
+            ))}
           </ul>
-          <div className="total" id="total" name="total">Total: ₹{rightTotal}</div>
+          {rightTotal < 0 && <div className="total" style={{ color: "red" }}>Total: ₹{rightTotal}</div>}
         </div>
+
+      </div>
+
+      <div className="buttons_section">
+        <button>PendingTallyParty</button>
+        <button onClick={printBalance}>PrintBalancesheet</button>
       </div>
     </>
   );
