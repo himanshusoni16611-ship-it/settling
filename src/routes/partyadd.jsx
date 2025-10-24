@@ -42,6 +42,7 @@ pnm,gnm,mob,jdate
 }
 
   try{
+
     const response = await fetch('https://server-ufa1.onrender.com/partyadd',{
 method:'POST',
 headers:{
