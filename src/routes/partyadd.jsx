@@ -77,7 +77,7 @@ const alertdeelte = async (e, id) => {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`https://server-ufa1.onrender.com/partyadd/${id}`, {
+      const response = await fetch(`http://178.16.139.134:5000/api/partyadd/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
