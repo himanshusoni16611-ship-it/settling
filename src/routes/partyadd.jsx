@@ -43,7 +43,7 @@ pnm,gnm,mob,jdate
 
   try{
 
-    const response = await fetch('http://178.16.139.134:5000/api/partyadd',{
+    const response = await fetch('http://178.16.139.134:5000/partyadd',{
 method:'POST',
 headers:{
     'Content-Type':'application/json',
@@ -77,7 +77,7 @@ const alertdeelte = async (e, id) => {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`http://178.16.139.134:5000/api/partyadd/${id}`, {
+      const response = await fetch(`http://178.16.139.134:5000/partyadd/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
