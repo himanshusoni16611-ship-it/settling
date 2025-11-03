@@ -352,9 +352,11 @@ module.exports = app;
 
 // ✅ Run locally only if not in Vercel
 if (require.main === module) {
-  app.listen(port, () => {
+  app.listen(port,'0.0.0.0', () => {
     console.log(`✅ Server running locally on http://localhost:${port}`);
   });
 }
+
+
 
 
