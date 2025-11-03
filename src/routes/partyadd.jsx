@@ -43,7 +43,7 @@ pnm,gnm,mob,jdate
 
   try{
 
-    const response = await fetch('https://server-ufa1.onrender.com/partyadd',{
+    const response = await fetch('http://178.16.139.134:5000/api/partyadd',{
 method:'POST',
 headers:{
     'Content-Type':'application/json',
