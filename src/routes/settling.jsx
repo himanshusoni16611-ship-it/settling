@@ -328,9 +328,8 @@ console.error('Tally error:',error);
   }
 
   try {
-    const response = await fetch(
-      `http://178.16.139.134:5000?fparty=${encodeURIComponent(party)}`,
-      {
+    const response = await fetch(`http://178.16.139.134:5000?fparty=${encodeURIComponent(party)}`,
+  {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       }
