@@ -329,7 +329,7 @@ console.error('Tally error:',error);
 
   try {
     const response = await fetch(
-      `https://server-ufa1.onrender.com?fparty=${encodeURIComponent(party)}`,
+      `http://178.16.139.134:5000?fparty=${encodeURIComponent(party)}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
