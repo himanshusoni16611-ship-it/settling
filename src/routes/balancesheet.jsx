@@ -8,7 +8,7 @@ const Bs = () => {
 
   const getreq = async () => {
     try {
-      const response = await fetch('https://server-ufa1.onrender.com/balancesheet');
+      const response = await fetch('http://178.16.139.134:5000/balancesheet');
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
       const json = await response.json();
 
