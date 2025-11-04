@@ -328,23 +328,22 @@ console.error('Tally error:',error);
   }
 
   try {
-    const response = await fetch(`http://178.16.139.134:5000?fparty=${encodeURIComponent(party)}`,
-  {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }
+    const response = await fetch(
+      `http://178.16.139.134:5000/settlingentry?fparty=${encodeURIComponent(party)}`
     );
-    if (response.ok) {
-      const data = await response.json();
-      if (Array.isArray(data)) {
-        setPartyData(data);
-      }
-    } else {
-      setPartyData('Error fetching data');
+
+    if (!response.ok) {
+      console.warn("Server returned non-200 response");
+      setPartyData([]); // ✅ ensure array
+      return;
     }
+
+    const data = await response.json();
+    setPartyData(Array.isArray(data) ? data : []); // ✅ ALWAYS ensure array
+
   } catch (err) {
-    console.error('Fetch error:', err);
-    setPartyData('Fetch failed');
+    console.error("Fetch error:", err);
+    setPartyData([]); // ✅ prevent reduce() error
   }
 };
 
