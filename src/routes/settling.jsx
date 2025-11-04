@@ -52,7 +52,8 @@ if(partyfrmqu){
 
 useEffect(() => {
   if (fparty.trim()) {
-    fetchData(fparty);
+ //   fetchData(fparty);
+ alert(fparty);
   } else {
     setPartyData([]); // clear if no party
   }
