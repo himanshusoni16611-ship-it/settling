@@ -322,7 +322,7 @@ console.error('Tally error:',error);
 
 
  //fetchdata by name
- const fetchData = async (party) => {
+const fetchData = async (party) => {
   if (!party || !party.trim()) {
     setPartyData([]);
     return;
@@ -330,21 +330,28 @@ console.error('Tally error:',error);
 
   try {
     const response = await fetch(
-      `http://178.16.139.134:5000/settlingentry?fparty=${encodeURIComponent(party)}`
+      `http://178.16.139.134:5000/settlingentry?fparty=${encodeURIComponent(party)}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
 
     if (!response.ok) {
-      console.warn("Server returned non-200 response");
-      setPartyData([]); // ✅ ensure array
+      console.log("Not JSON, response:", await response.text());
+      setPartyData([]);
       return;
     }
 
     const data = await response.json();
-    setPartyData(Array.isArray(data) ? data : []); // ✅ ALWAYS ensure array
-
+    if (Array.isArray(data)) {
+      setPartyData(data);
+    } else {
+      setPartyData([]);
+    }
   } catch (err) {
     console.error("Fetch error:", err);
-    setPartyData([]); // ✅ prevent reduce() error
+    setPartyData([]);
   }
 };
 
