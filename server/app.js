@@ -297,7 +297,7 @@ app.get('/balancesheet', async (req, res) => {
 
 
 
-app.post('/tally/:fparty',async(req,res)=>{
+app.post('settlingentry/tally/:fparty',async(req,res)=>{
 try{
   const {fparty} = req.params;
 
