@@ -313,6 +313,7 @@ res.json({
 console.error("error");
 }
 })
+
 app.delete('/deleteall', async (req, res) => {
   try {
     const deletedParties = await Party.deleteMany({});
