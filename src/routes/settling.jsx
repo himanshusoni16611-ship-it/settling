@@ -303,7 +303,9 @@ const result = await Swal.fire({
 
 if(!result.isConfirmed)return;
   try{
-const response = await fetch(`http://178.16.139.134:5000/settlingentry/tally/${encodeURIComponent(fparty)}`,{
+const response = await fetch(
+  `http://178.16.139.134:5000/settlingentry/tally/${encodeURIComponent(fparty)}`,
+  {
 method:"POST",
 headers:{
   'Content-Type':'application/json',
