@@ -261,3 +261,7 @@ top: 0;
   position: relative;
   padding-bottom: 0.5vh; /* minimal safe space */
 }
+.cl_bal{
+  font-size: 20px;
+  font-weight:bold;
+}
