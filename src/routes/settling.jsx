@@ -289,37 +289,33 @@ const handlerowkeydown = (e, index, txtnId) => {
 
 
 //process tally
-const Process_tally = async(e,fparty)=>{
-
+const Process_tally = async (e, fparty) => {
   e.preventDefault();
 
-const result = await Swal.fire({
-  title:"Are you Sure Want to tally",
-  icon: 'warning',
+  const result = await Swal.fire({
+    title: "Are you Sure Want to tally",
+    icon: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Yes, tally them!',
     cancelButtonText: 'Cancel'
-});
+  });
 
-if(!result.isConfirmed)return;
-  try{
-const response = await fetch(
-  `http://178.16.139.134:5000/settlingentry/tally/${encodeURIComponent(fparty)}`,
-  {
-method:"POST",
-headers:{
-  'Content-Type':'application/json',
-},
-body:JSON.stringify({fparty}),
+  if (!result.isConfirmed) return;
 
-})
-if(response.ok){
-    await fetchData(fparty);
-}
-  }catch(error){
-console.error('Tally error:',error);
+  try {
+    const response = await fetch(
+      `http://178.16.139.134:5000/settlingentry/tally/${encodeURIComponent(fparty)}`,
+      { method: "POST" }
+    );
+
+    if (response.ok) {
+      await fetchData(fparty);
+    }
+  } catch (error) {
+    console.error('Tally error:', error);
   }
 }
+
 
 
 
