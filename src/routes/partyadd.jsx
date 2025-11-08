@@ -99,7 +99,7 @@ const PartyAdd = () => {
     if (result.isConfirmed) {
       try {
         // FIXED: Use correct API endpoint
-        const response = await fetch(`/api/partyadd/${id}`, {
+        const response = await fetch(`http://www.setling.in/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
         });
