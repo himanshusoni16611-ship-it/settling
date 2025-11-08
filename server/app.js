@@ -44,7 +44,7 @@ app.use(cors({
 const port = process.env.PORT||5000;
 
 
-app.use(express.static(buildpath));
+
 
 app.post('/api/partyadd', async (req, res) => {
   console.log('Received data:', req.body);
@@ -342,6 +342,7 @@ app.use((req, res, next) => {
   console.log('Incoming request:', req.method, req.originalUrl);
   next();
 });
+app.use(express.static(buildpath));
 
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(buildpath, 'index.html'));
