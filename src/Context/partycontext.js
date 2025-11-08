@@ -14,7 +14,7 @@ export const PartyProvider = ({ children }) => {
     setError(null);
     try {
       // CORRECTED: Using the right domain www.setling.in
-      const response = await fetch("https://www.setling.in/api/partyadd", {
+      const response = await fetch("/api/partyadd", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
