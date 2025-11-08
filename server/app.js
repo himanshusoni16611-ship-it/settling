@@ -45,7 +45,7 @@ const port = process.env.PORT||5000;
 
 
 
-app.post('/partyadd', async (req, res) => {
+app.post('/api/partyadd', async (req, res) => {
   console.log('Received data:', req.body);
   try {
     const data = req.body;
@@ -66,7 +66,7 @@ app.post('/partyadd', async (req, res) => {
 });
 
 
-app.get('/partyadd', async (req, res) => {
+app.get('/api/partyadd', async (req, res) => {
   try {
     const sortedparties = await Party.find({}).sort({ pnm: 1 }); // ✅ Correct way
     res.json(sortedparties);
@@ -76,7 +76,7 @@ app.get('/partyadd', async (req, res) => {
   }
 });
 
-app.delete('/partyadd/:id', async (req, res) => {
+app.delete('/api/partyadd/:id', async (req, res) => {
   try {
     const { id } = req.params;
     console.log('Deleting party with id:', id);
@@ -112,7 +112,7 @@ if(total!== 0){
 });
 
 
-app.post('/settlingentry', async (req, res) => {
+app.post('/api/settlingentry', async (req, res) => {
  
   try{
 let { date , fparty , sparty , debit , credit , narration,tally} = req.body;
@@ -163,7 +163,7 @@ res.status(201).json({
 
 
 
-app.get('/settlingentry', async (req, res) => {
+app.get('/api/settlingentry', async (req, res) => {
   try {
     const fparty = req.query.fparty; // get from query param
     if (!fparty) {
@@ -182,7 +182,7 @@ app.get('/settlingentry', async (req, res) => {
 });
 
 
-app.delete('/settlingentry/:txtnId',async(req,res)=>{
+app.delete('/api/settlingentry/:txtnId',async(req,res)=>{
   try{
   // why here used param instead of id dought 
   //here entries are deleting by dleetemany
@@ -200,7 +200,7 @@ return res.status(200).json({ message: "Delete success", txtnId });
   }
 })
 
-app.get('/settlingentry/:txtnId',async(req,res)=>{
+app.get('/api/settlingentry/:txtnId',async(req,res)=>{
   try{
     const txtnId = req.params.txtnId;
     const entry = await Sett.findOne({txtnId}).exec();
@@ -212,7 +212,7 @@ app.get('/settlingentry/:txtnId',async(req,res)=>{
   }
 })
 
-app.put('/settlingentry/:up_id', async (req, res) => {
+app.put('/api/settlingentry/:up_id', async (req, res) => {
   const { up_id } = req.params;
   const { fparty, date, sparty, debit, credit, narration } = req.body;
 
@@ -257,7 +257,7 @@ app.put('/settlingentry/:up_id', async (req, res) => {
   }
 });
 
-app.get('/balancesheet', async (req, res) => {
+app.get('/api/balancesheet', async (req, res) => {
   try {
     const result = await Sett.aggregate([
       {
@@ -300,7 +300,7 @@ app.get('/balancesheet', async (req, res) => {
 
 
 
-app.post('/settlingentry/tally/:fparty',async(req,res)=>{
+app.post('/api/settlingentry/tally/:fparty',async(req,res)=>{
 try{
   const {fparty} = req.params;
 
@@ -317,7 +317,7 @@ console.error("error");
 }
 })
 
-app.delete('/deleteall', async (req, res) => {
+app.delete('/api/deleteall', async (req, res) => {
   try {
     const deletedParties = await Party.deleteMany({});
     const deletedSetts = await Sett.deleteMany({});
