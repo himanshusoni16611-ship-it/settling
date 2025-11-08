@@ -48,7 +48,7 @@ const PartyAdd = () => {
 
     try {
       // FIXED: Use correct API endpoint
-      const response = await fetch('/api/partyadd', {
+      const response = await fetch('http://www.setling.in/partyadd', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
