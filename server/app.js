@@ -346,7 +346,7 @@ app.use(express.static(buildpath));
 
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(buildpath, 'index.html'));
-  console.log('Serving index.html from', buildpath);
+ 
 });
 app.get("/", (req, res) => {
   res.send("Hello, world!");
