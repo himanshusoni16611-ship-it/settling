@@ -30,7 +30,7 @@ const app = express()
 app.use(bodyParser.json())
 
 
-app.use(express.static(buildpath));
+
 app.use(cors({
   origin: [
    'http://setling.in',
@@ -40,10 +40,11 @@ app.use(cors({
     'http://localhost:3000'
   ]
 }));
+
 const port = process.env.PORT||5000;
 
 
-
+app.use(express.static(buildpath));
 
 app.post('/api/partyadd', async (req, res) => {
   console.log('Received data:', req.body);
