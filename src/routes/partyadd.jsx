@@ -1,111 +1,134 @@
-//development enviroment
-import { useState,useRef, useEffect} from 'react';
+// development environment
+import { useState, useRef, useEffect } from 'react';
 import './Party.css';
 import { useParty } from '../Context/partycontext';
-//import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import propercase from '../functions/function';
 
 const PartyAdd = () => {
-const today = new Date().toISOString().split('T')[0]; 
-  const [pnm,setPnm] = useState('');
-const [gnm,setGnm] = useState('');
-const [mob,setMob] = useState('');
-const [jdate,setJdate] = useState(today);
+  const today = new Date().toISOString().split('T')[0]; 
+  const [pnm, setPnm] = useState('');
+  const [gnm, setGnm] = useState('');
+  const [mob, setMob] = useState('');
+  const [jdate, setJdate] = useState(today);
 
-const pnmRef = useRef(null);
-const gnmRef = useRef(null);
-const mobRef = useRef(null);
-const jdRef = useRef(null);
+  const pnmRef = useRef(null);
+  const gnmRef = useRef(null);
+  const mobRef = useRef(null);
+  const jdRef = useRef(null);
 
-const {partyList,fetchPartyList}= useParty();
+  const { partyList, fetchPartyList } = useParty();
 
-const nextinput = (e, nextRef) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-
-    // ✅ Only check pnmRef once
-    if (pnmRef.current && pnmRef.current.value.trim() !== '') {
-      nextRef.current?.focus();
-    } else {
-      pnmRef.current?.focus();
+  const nextinput = (e, nextRef) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (pnmRef.current && pnmRef.current.value.trim() !== '') {
+        nextRef.current?.focus();
+      } else {
+        pnmRef.current?.focus();
+      }
     }
-  }
-};
+  };
 
-
-
-const Submitform = async(e)=>{
-  e.preventDefault();
-  const FormData={
-pnm,gnm,mob,jdate
-}
-
-  try{
-
-    const response = await fetch('http://www.setling.in/partyadd',{
-method:'POST',
-headers:{
-    'Content-Type':'application/json',
-},
-body : JSON.stringify(FormData),
-    });
-const data = await response.json();
-  console.log('Server response:', data);
-   fetchPartyList(); 
-  setPnm('');
-setGnm('');
-setMob('');
-pnmRef.current.focus();
-  }catch(err){
-    console.error('Error sending Data:',err);
-  }
-};
-
-
-const alertdeelte = async (e, id) => {
-  e.preventDefault();
-
-  const result = await Swal.fire({
-    title: 'Are you sure you want to delete this party?',
-    text: 'This action cannot be undone!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'Cancel',
-  });
-
-  if (result.isConfirmed) {
-    try {
-      const response = await fetch(`http://www.setling.in/partyadd/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (!response.ok) throw new Error('Failed to delete');
-
-  
-      Swal.fire({
-        title: 'Deleted!',
-        text: 'The party has been successfully deleted.',
-        icon: 'success',
-      });
-
-      fetchPartyList(); // Refresh list after deletion
-    } catch (err) {
-      console.error('Error in delete record', err);
+  const Submitform = async (e) => {
+    e.preventDefault();
+    
+    // Validate required field
+    if (!pnm.trim()) {
       Swal.fire({
         title: 'Error',
-        text: 'There is pending balance',
+        text: 'Party name is required!',
+        icon: 'error',
+      });
+      pnmRef.current.focus();
+      return;
+    }
+
+    const FormData = { pnm, gnm, mob, jdate };
+
+    try {
+      // FIXED: Use correct API endpoint
+      const response = await fetch('/api/partyadd', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(FormData),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Server response:', data);
+      
+      Swal.fire({
+        title: 'Success!',
+        text: 'Party added successfully',
+        icon: 'success',
+      });
+      
+      fetchPartyList(); 
+      setPnm('');
+      setGnm('');
+      setMob('');
+      pnmRef.current.focus();
+    } catch (err) {
+      console.error('Error sending Data:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to add party. Please try again.',
         icon: 'error',
       });
     }
-  }
-};
-useEffect(() => {
+  };
+
+  const alertdeelte = async (e, id) => {
+    e.preventDefault();
+
+    const result = await Swal.fire({
+      title: 'Are you sure you want to delete this party?',
+      text: 'This action cannot be undone!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // FIXED: Use correct API endpoint
+        const response = await fetch(`/api/partyadd/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) throw new Error('Failed to delete');
+
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'The party has been successfully deleted.',
+          icon: 'success',
+        });
+
+        fetchPartyList(); // Refresh list after deletion
+      } catch (err) {
+        console.error('Error in delete record', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'There is pending balance or deletion failed',
+          icon: 'error',
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
     pnmRef.current.focus();
   }, []);
-    return (
+
+  return (
     <section className="mypartyadd" id="mypartyadd" name="mypartyadd">
       <div className="party-form-container">
         <div className='party_head' name='party_head' id='party_head'><h1>Party Add/Delete</h1></div>
@@ -136,17 +159,16 @@ useEffect(() => {
           <p>No results found</p>
         ) : (
           partyList.map((item, index) => (
-          <div key={index} className="result-item" id="result-item" name="result-item">
-  <div className="party-entry" id="party-entry" name="party-entry">
-    <strong><tr>{item.pnm}</tr></strong>
-  <button onClick={(e) => alertdeelte(e, item._id)} className='dl_bt' id='dl_bt' name='dl_bt'>Delete</button></div>
-</div>
-
+            <div key={index} className="result-item" id="result-item" name="result-item">
+              <div className="party-entry" id="party-entry" name="party-entry">
+                <strong>{item.pnm}</strong>
+                <button onClick={(e) => alertdeelte(e, item._id)} className='dl_bt' id='dl_bt' name='dl_bt'>Delete</button>
+              </div>
+            </div>
           ))
         )}
       </div>
     </section>
-    
   );
 };
 
