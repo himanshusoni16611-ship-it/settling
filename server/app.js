@@ -33,8 +33,9 @@ app.use(bodyParser.json())
 app.use(express.static(buildpath));
 app.use(cors({
   origin: [
-    'http://localhost:3000',
-    'http://178.16.139.134:5000'
+   'http://setling.in',
+    'https://setling.in',
+    'http://localhost:3000'
   ]
 }));
 const port = process.env.PORT||5000;
