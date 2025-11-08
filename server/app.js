@@ -35,6 +35,8 @@ app.use(cors({
   origin: [
    'http://setling.in',
     'https://setling.in',
+    'http://www.setling.in',
+    'https://www.setling.in',
     'http://localhost:3000'
   ]
 }));
