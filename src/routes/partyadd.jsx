@@ -43,7 +43,7 @@ pnm,gnm,mob,jdate
 
   try{
 
-    const response = await fetch('http://www.setling.in/partyadd',{
+    const response = await fetch('/partyadd',{
 method:'POST',
 headers:{
     'Content-Type':'application/json',
@@ -77,7 +77,7 @@ const alertdeelte = async (e, id) => {
 
   if (result.isConfirmed) {
     try {
-      const response = await fetch(`http://www.setling.in/partyadd/${id}`, {
+      const response = await fetch(`/partyadd/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
       });
