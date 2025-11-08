@@ -9,7 +9,7 @@ export const PartyProvider = ({ children }) => {
 
   const fetchPartyList = async () => {
     try {
-      const response = await fetch("http://178.16.139.134:5000/partyadd", {
+      const response = await fetch("http://www.setling.in/partyadd", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
