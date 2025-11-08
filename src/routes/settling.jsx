@@ -136,7 +136,7 @@ const handleSubmit = async (e) => {
     if (up_id == null) {
       // Add new entry
       try {
-        const response = await fetch('http://www.setling.in/settlingentry', {
+        const response = await fetch('/settlingentry', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -153,7 +153,7 @@ const handleSubmit = async (e) => {
     } else {
       // Update existing entry
       try {
-        const response = await fetch(`http://www.setling.in/settlingentry/${up_id}`, {
+        const response = await fetch(`/settlingentry/${up_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -185,7 +185,7 @@ cancelButtonText:'Cancel'
 
 if(deletepop.isConfirmed){
   try {
-    const response = await fetch(`http://www.setling.in/settlingentry/${txtnId}`, {
+    const response = await fetch(`/settlingentry/${txtnId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ cancelButtonText:'Cancel'
 })
 if(modipop.isConfirmed){
   try {
-    const response = await fetch(`http://www.setling.in/settlingentry/${txtnId}`, {
+    const response = await fetch(`/settlingentry/${txtnId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -304,7 +304,7 @@ const Process_tally = async (e, fparty) => {
 
   try {
     const response = await fetch(
-      `http://www.setling.in/settlingentry/tally/${encodeURIComponent(fparty)}`,
+      `/settlingentry/tally/${encodeURIComponent(fparty)}`,
       { method: "POST" }
     );
 
@@ -328,7 +328,7 @@ const fetchData = async (party) => {
 
   try {
     const response = await fetch(
-      `http://www.setling.in/settlingentry?fparty=${encodeURIComponent(party)}`,
+      `/settlingentry?fparty=${encodeURIComponent(party)}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
