@@ -13,8 +13,8 @@ export const PartyProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      // CHANGE THIS: Use relative URL instead of absolute URL
-      const response = await fetch("http://www.setling.in/partyadd", {
+      // CORRECTED: Using the right domain www.setling.in
+      const response = await fetch("https://www.setling.in/api/partyadd", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
