@@ -8,7 +8,7 @@ const Bs = () => {
 
   const getreq = async () => {
     try {
-      const response = await fetch('http://www.setling.in/balancesheet');
+      const response = await fetch('/balancesheet');
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
       const json = await response.json();
 
