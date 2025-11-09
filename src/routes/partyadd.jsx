@@ -48,7 +48,7 @@ const PartyAdd = () => {
 
     try {
       // FIXED: Use correct API endpoint
-      const response = await fetch('http://www.setling.in/partyadd', {
+      const response = await fetch('https://www.setling.in/partyadd', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const PartyAdd = () => {
     if (result.isConfirmed) {
       try {
         // FIXED: Use correct API endpoint
-        const response = await fetch(`http://www.setling.in/${id}`, {
+        const response = await fetch(`https://www.setling.in/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
         });
