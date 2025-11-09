@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')
 //port is defined in it
 const fs = require('fs');
 //connecttion file its most important
-const db = require('./db'); // ✅ Correct path
+ // ✅ Correct path
 const path = require('path');
 const buildpath = path.join(__dirname,'..',"build");
 if (fs.existsSync(buildpath)) {
@@ -22,7 +22,7 @@ if (fs.existsSync(buildpath)) {
 const dotenv = require('dotenv');
 
 dotenv.config();
-
+const db = require('./db');
 const cors = require('cors')
 
 const app = express()
