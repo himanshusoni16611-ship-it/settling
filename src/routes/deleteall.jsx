@@ -14,7 +14,7 @@ const result = await Swal.fire({
 })
 if(!result.isConfirmed)return;
 try{
-const url = await fetch("https://www.setling.in/deleteall",{
+const url = await fetch("https://www.setling.in/api/deleteall",{
     method:'DELETE',
     headers:{
         'Content-Type':'application/json',
