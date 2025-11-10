@@ -66,7 +66,7 @@ const Bs = () => {
             <span>Tally</span>
           </div>
           <ul>
-            {data.filter(item => item.side === 'left').map((item, index) => (
+            {data.filter(item => item.side === 'left' && item.netamt!== 0).map((item, index) => (
               <li key={index} className={`leftnames ${item.isTallied ? 'tallied' : ''}`}
                   onClick={() => gotonext(item.fparty)}>
                 <span>{item.fparty}</span>
@@ -86,7 +86,7 @@ const Bs = () => {
             <span>Tally</span>
           </div>
           <ul>
-            {data.filter(item => item.side === 'right').map((item, index) => (
+            {data.filter(item => item.side === 'right' && item.netamt!==0).map((item, index) => (
               <li key={index} className={`rightnames ${item.isTallied ? 'tallied' : ''}`}
                   onClick={() => gotonext(item.fparty)}>
                 <span>{item.fparty}</span>
