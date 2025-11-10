@@ -136,24 +136,63 @@ app.delete('/api/settlingentry/:txtnId', async (req, res) => {
 });
 
 // Update entry
+app.get('/settlingentry/:txtnId',async(req,res)=>{
+  try{
+    const txtnId = req.params.txtnId;
+    const entry = await Sett.findOne({txtnId}).exec();
+
+    res.status(200).json(entry);
+
+  }catch(error){
+    console.error(error);
+  }
+})
+
 app.put('/api/settlingentry/:up_id', async (req, res) => {
+  const { up_id } = req.params;
+  const { fparty, date, sparty, debit, credit, narration } = req.body;
+
   try {
-    const { up_id } = req.params;
-    const { fparty, sparty, date, debit, credit, narration } = req.body;
+    // Find the first document by ID to extract the txtnId
+    const originalEntry = await Sett.findById(up_id);
+    if (!originalEntry) {
+      return res.status(404).json({ message: 'Entry not found' });
+    }
 
-    const original = await Sett.findById(up_id);
-    if (!original) return res.status(404).json({ message: 'Entry not found' });
-    const { txtnId } = original;
+    const { txtnId } = originalEntry;
 
-    const update1 = await Sett.findByIdAndUpdate(up_id, { fparty, sparty, date, debit, credit, narration }, { new: true });
-    const update2 = await Sett.findOneAndUpdate({ txtnId, fparty: sparty, sparty: fparty }, { fparty: sparty, sparty: fparty, date, debit: credit, credit: debit, narration }, { new: true });
+    // Update the first entry
+    const updateEntry1 = await Sett.findByIdAndUpdate(
+      up_id,
+      { fparty, sparty, date, debit, credit, narration },
+      { new: true }
+    );
 
-    res.json({ update1, update2 });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
+    // Update the second entry (reversed party and amounts)
+    const updateEntry2 = await Sett.findOneAndUpdate(
+      {
+        txtnId,
+        fparty: sparty,
+        sparty: fparty
+      },
+      {
+        fparty: sparty,
+        sparty: fparty,
+        date,
+        debit: credit,
+        credit: debit,
+        narration
+      },
+      { new: true }
+    );
+
+    res.status(200).json({ updateEntry1, updateEntry2 });
+  } catch (error) {
+    console.error('Update error:', error);
+    res.status(500).json({ message: 'Update failed', error });
   }
 });
+
 
 // Get balancesheet
 app.get('/api/balancesheet', async (req, res) => {
