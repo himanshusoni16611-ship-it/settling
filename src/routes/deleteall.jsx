@@ -14,7 +14,7 @@ const result = await Swal.fire({
 })
 if(!result.isConfirmed)return;
 try{
-const url = await fetch("http://178.16.139.134:5000/deleteall",{
+const url = await fetch("http://178.16.139.134:5000/api/deleteall",{
     method:'DELETE',
     headers:{
         'Content-Type':'application/json',
