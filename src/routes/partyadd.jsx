@@ -63,11 +63,11 @@ const PartyAdd = () => {
       const data = await response.json();
       console.log('Server response:', data);
       
-      Swal.fire({
-        title: 'Success!',
-        text: 'Party added successfully',
-        icon: 'success',
-      });
+   //   Swal.fire({
+     //   title: 'Success!',
+      //  text: 'Party added successfully',
+       // icon: 'success',
+      //});
       
       fetchPartyList(); 
       setPnm('');
