@@ -24,7 +24,8 @@ app.use(cors({
     'https://setling.in',
     'http://www.setling.in',
     'https://www.setling.in',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://178.16.139.134:5000',
   ]
 }));
 
