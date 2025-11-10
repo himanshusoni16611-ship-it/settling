@@ -136,7 +136,7 @@ app.delete('/api/settlingentry/:txtnId', async (req, res) => {
 });
 
 // Update entry
-app.get('/settlingentry/:txtnId',async(req,res)=>{
+app.get('/api/settlingentry/:txtnId',async(req,res)=>{
   try{
     const txtnId = req.params.txtnId;
     const entry = await Sett.findOne({txtnId}).exec();
