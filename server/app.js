@@ -229,14 +229,22 @@ app.post('/api/settlingentry/tally/:fparty', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-app.put("/api/balancesheet/starall", async (req, res) => {
+app.put('/api/balancesheet/starall', async (req, res) => {
   try {
-    await Sett.updateMany({}, { $set: { star: true } }); // Star everything
-    res.json({ message: "All parties starred" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const result = await Sett.updateMany(
+      {},                        // all documents
+      { $set: { star: "⭐" } }    // set every star to ⭐
+    );
+
+    console.log("All parties marked with star:", result);
+    res.status(200).json({ success: true, message: "All parties tallied ✅" });
+
+  } catch (error) {
+    console.error("Error updating stars:", error);
+    res.status(500).json({ success: false, message: "Failed to tally all" });
   }
 });
+
 
 // Delete all
 app.delete('/api/deleteall', async (req, res) => {
