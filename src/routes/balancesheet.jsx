@@ -12,7 +12,7 @@ const pendinbalance = async (e) => {
     const response = await fetch('http://178.16.139.134:5000/api/balancesheet/starall', {
       method: "PUT",
     });
-    getreq(); // refresh UI
+    getreq();
   } catch (err) {
     console.error("Error starring all parties:", err);
   }
