@@ -50,7 +50,9 @@ const Bs = () => {
   const rightTotal = data.filter(item => item.side === 'right')
                          .reduce((acc, item) => acc + item.netamt, 0);
 
-  const printBalance = () => alert("Print working");
+  const printBalance = () => {
+    window.print();
+  }
 
   return (
     <>
