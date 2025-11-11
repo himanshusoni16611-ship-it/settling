@@ -8,7 +8,7 @@ const Bs = () => {
 
 const pendinbalance = async () => {
   try {
-    await fetch('http://178.16.139.134:5000/api/balancesheet/starall', {
+    const response = await fetch('http://178.16.139.134:5000/api/balancesheet/starall', {
       method: "PUT",
     });
     getreq(); // refresh UI
