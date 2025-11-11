@@ -6,6 +6,15 @@ const Bs = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
+const pendinbalance=async()=>{
+try{
+const response =  await fetch('http://178.16.139.134:5000/api/balancesheet/starall',{
+  method:"PUT",
+  
+});
+  getreq();
+}
+}
   const getreq = async () => {
     try {
       const response = await fetch('http://178.16.139.134:5000/api/balancesheet');
@@ -53,7 +62,6 @@ const Bs = () => {
   const printBalance = () => {
     window.print();
   }
-
   return (
     <>
       <div className="bs-container">Balance Sheet</div>
@@ -103,7 +111,7 @@ const Bs = () => {
       </div>
 
       <div className="buttons_section">
-        <button>PendingTallyParty</button>
+        <button onClick={pendinbalance}>PendingTallyParty</button>
         <button onClick={printBalance}>PrintBalancesheet</button>
       </div>
     </>
