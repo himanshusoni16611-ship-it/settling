@@ -6,7 +6,8 @@ const Bs = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
-const pendinbalance = async () => {
+const pendinbalance = async (e) => {
+  e.preventDefault();
   try {
     const response = await fetch('http://178.16.139.134:5000/api/balancesheet/starall', {
       method: "PUT",
@@ -113,7 +114,7 @@ const pendinbalance = async () => {
       </div>
 
       <div className="buttons_section">
-        <button onClick={pendinbalance}>PendingTallyParty</button>
+        <button type="button" onClick={pendinbalance}>PendingTallyParty</button>
         <button onClick={printBalance}>PrintBalancesheet</button>
       </div>
     </>
