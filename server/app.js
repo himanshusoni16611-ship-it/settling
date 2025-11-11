@@ -229,6 +229,14 @@ app.post('/api/settlingentry/tally/:fparty', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+app.put("/api/balancesheet/starall", async (req, res) => {
+  try {
+    await Sett.updateMany({}, { $set: { star: true } }); // Star everything
+    res.json({ message: "All parties starred" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Delete all
 app.delete('/api/deleteall', async (req, res) => {
