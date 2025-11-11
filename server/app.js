@@ -233,7 +233,7 @@ app.put('/api/balancesheet/starall', async (req, res) => {
   try {
     const result = await Sett.updateMany(
       {},                        // all documents
-      { $set: { star: "⭐" } }    // set every star to ⭐
+      { $set: { tally: "*" } }    // set every star to ⭐
     );
 
     console.log("All parties marked with star:", result);
