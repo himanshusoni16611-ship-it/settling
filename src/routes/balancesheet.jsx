@@ -6,15 +6,17 @@ const Bs = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
-const pendinbalance=async()=>{
-try{
-const response =  await fetch('http://178.16.139.134:5000/api/balancesheet/starall',{
-  method:"PUT",
-  
-});
-  getreq();
-}
-}
+const pendinbalance = async () => {
+  try {
+    await fetch('http://178.16.139.134:5000/api/balancesheet/starall', {
+      method: "PUT",
+    });
+    getreq(); // refresh UI
+  } catch (err) {
+    console.error("Error starring all parties:", err);
+  }
+};
+
   const getreq = async () => {
     try {
       const response = await fetch('http://178.16.139.134:5000/api/balancesheet');
