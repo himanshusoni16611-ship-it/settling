@@ -1,21 +1,33 @@
 /* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 /* Full-screen background */
-
+body {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
 
 /* Login container */
 .login-container {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
-  padding: 40px 50px;
+  padding: 30px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   text-align: center;
-  width: 350px;
+  width: 100%;
+  max-width: 350px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-/* margin-left:500px;
- margin-top: 240px;*/
- 
+  /* REMOVED: margin-left:500px; margin-top: 240px; */
 }
 
 .login-container:hover {
@@ -25,33 +37,37 @@
 
 /* Heading */
 .login-container h2 {
-  color:linear-gradient(135deg, #6a11cb, #2575fc);
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 25px;
   letter-spacing: 1px;
   font-weight: 600;
-
+  font-size: 1.5rem;
 }
 
 /* Labels */
 .login-container label {
   color: #f1f1f1;
   font-size: 0.95rem;
-  margin-right: 5px;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
 }
 
 /* Input fields */
 .login-container input {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0 20px 0;
+  padding: 14px;
+  margin: 0 0 20px 0;
   border: none;
   border-radius: 8px;
   outline: none;
   background: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
+  font-size: 16px; /* Prevents iOS zoom */
   color: #333;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
-  text-align: center;
 }
 
 .login-container input:focus {
@@ -66,12 +82,13 @@
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 12px;
+  padding: 14px;
   font-size: 1rem;
   cursor: pointer;
   font-weight: 600;
   letter-spacing: 0.5px;
   transition: background 0.3s ease, transform 0.2s ease;
+  min-height: 44px; /* Better touch target */
 }
 
 .login-container button:hover {
@@ -79,25 +96,87 @@
   transform: translateY(-2px);
 }
 
-/* Responsive design */
-@media (max-width: 480px) {
-  .login-container {
-    width: 85%;
-    padding: 30px;
-  }
+/* ===== MOBILE RESPONSIVE STYLES ===== */
 
-  .login-container h2 {
-    font-size: 1.5rem;
+/* Small mobile devices (up to 480px) */
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+    align-items: flex-start;
+    padding-top: 50px;
   }
-}
-@media (min-width: 768px) {
+  
   .login-container {
-    width: 70%;
-    padding: 30px;
+    width: 100%;
+    padding: 25px 20px;
+    max-width: 100%;
   }
   
   .login-container h2 {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
   }
+  
+  .login-container input {
+    padding: 12px;
+    font-size: 16px; /* Crucial for iOS */
+    margin-bottom: 15px;
+  }
+  
+  .login-container button {
+    padding: 12px;
+    min-height: 44px;
+  }
+}
 
+/* Medium mobile devices (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .login-container {
+    max-width: 400px;
+    padding: 35px 30px;
+  }
+}
+
+/* Tablets (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .login-container {
+    max-width: 380px;
+    padding: 40px 35px;
+  }
+}
+
+/* Desktop (1025px and above) */
+@media (min-width: 1025px) {
+  .login-container {
+    max-width: 350px;
+    padding: 40px 35px;
+  }
+}
+
+/* Very small devices (up to 320px) */
+@media (max-width: 320px) {
+  body {
+    padding: 10px;
+    padding-top: 30px;
+  }
+  
+  .login-container {
+    padding: 20px 15px;
+  }
+  
+  .login-container h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (max-width: 768px) {
+  body {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+  
+  .login-container {
+    margin-top: 20px;
+  }
 }
