@@ -60,7 +60,7 @@ const LoginPage = ({ onLogin }) => {
       <button ref={buttonRef} onClick={handleLogin}>Login</button>
     </div>
       </div>
-    </div>
+ 
   );
 };
 
