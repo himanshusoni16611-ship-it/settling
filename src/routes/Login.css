@@ -9,25 +9,33 @@
 body {
   background: linear-gradient(135deg, #6a11cb, #2575fc);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0;
 }
 
-/* Login container */
+/* Main container that holds everything */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Login container - now properly positioned for mobile */
 .login-container {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
-  padding: 30px;
+  padding: 30px 25px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   text-align: center;
-  width: 100%;
+  width: 90%;
   max-width: 350px;
+  margin: 20px auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* REMOVED: margin-left:500px; margin-top: 240px; */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .login-container:hover {
@@ -53,26 +61,29 @@ body {
   font-size: 0.95rem;
   display: block;
   text-align: left;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 /* Input fields */
 .login-container input {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
   margin: 0 0 20px 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   outline: none;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   font-size: 16px; /* Prevents iOS zoom */
   color: #333;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
 }
 
 .login-container input:focus {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
-  transform: scale(1.02);
+  border-color: #6a11cb;
+  background: rgba(255, 255, 255, 0.95);
 }
 
 /* Login button */
@@ -81,102 +92,156 @@ body {
   background: linear-gradient(135deg, #6a11cb, #2575fc);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 1rem;
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 1.1rem;
   cursor: pointer;
   font-weight: 600;
   letter-spacing: 0.5px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  min-height: 44px; /* Better touch target */
+  transition: all 0.3s ease;
+  min-height: 50px; /* Better touch target */
+  margin-top: 10px;
 }
 
 .login-container button:hover {
   background: linear-gradient(135deg, #2575fc, #6a11cb);
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== MOBILE RESPONSIVE STYLES ===== */
+/* Form group spacing */
+.form-group {
+  margin-bottom: 5px;
+}
+
+/* ===== MOBILE FIRST STYLES ===== */
+
+/* Default mobile styles (applies to all devices) */
+.app-container {
+  padding: 20px 15px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 25px;
+}
 
 /* Small mobile devices (up to 480px) */
 @media (max-width: 480px) {
-  body {
+  .app-container {
     padding: 15px;
-    align-items: flex-start;
-    padding-top: 50px;
+    justify-content: center;
   }
   
   .login-container {
-    width: 100%;
-    padding: 25px 20px;
-    max-width: 100%;
+    padding: 35px 20px;
+    border-radius: 12px;
   }
   
   .login-container h2 {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
+    font-size: 1.4rem;
+    margin-bottom: 30px;
   }
   
   .login-container input {
-    padding: 12px;
-    font-size: 16px; /* Crucial for iOS */
-    margin-bottom: 15px;
+    padding: 14px;
+    margin-bottom: 18px;
+    border-radius: 8px;
   }
   
   .login-container button {
-    padding: 12px;
-    min-height: 44px;
+    padding: 15px;
+    min-height: 48px;
+    font-size: 1rem;
+    border-radius: 8px;
   }
-}
-
-/* Medium mobile devices (481px to 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-  .login-container {
-    max-width: 400px;
-    padding: 35px 30px;
-  }
-}
-
-/* Tablets (769px to 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .login-container {
-    max-width: 380px;
-    padding: 40px 35px;
-  }
-}
-
-/* Desktop (1025px and above) */
-@media (min-width: 1025px) {
-  .login-container {
-    max-width: 350px;
-    padding: 40px 35px;
+  
+  .login-container label {
+    font-size: 0.9rem;
   }
 }
 
 /* Very small devices (up to 320px) */
 @media (max-width: 320px) {
-  body {
+  .app-container {
     padding: 10px;
-    padding-top: 30px;
   }
   
   .login-container {
-    padding: 20px 15px;
+    padding: 30px 15px;
   }
   
   .login-container h2 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+  }
+  
+  .login-container input {
+    padding: 12px;
+  }
+  
+  .login-container button {
+    padding: 14px;
+    min-height: 46px;
+  }
+}
+
+/* Tablet devices (769px and above) */
+@media (min-width: 769px) {
+  .app-container {
+    padding: 40px 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-container {
+    width: 400px;
+    max-width: 400px;
+    padding: 50px 40px;
+  }
+  
+  .login-container h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Desktop devices (1025px and above) */
+@media (min-width: 1025px) {
+  .login-container {
+    width: 420px;
+    padding: 50px 45px;
   }
 }
 
 /* Landscape mode on mobile */
-@media (max-height: 500px) and (max-width: 768px) {
-  body {
-    align-items: flex-start;
-    padding-top: 20px;
+@media (max-height: 600px) and (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+    justify-content: flex-start;
   }
   
   .login-container {
     margin-top: 20px;
+    padding: 25px 20px;
+  }
+  
+  .login-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Ensure form is always visible */
+.login-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* Add some top spacing for very tall screens */
+@media (min-height: 800px) {
+  .app-container {
+    justify-content: center;
   }
 }
