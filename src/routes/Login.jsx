@@ -30,6 +30,7 @@ const LoginPage = ({ onLogin }) => {
   };
 
   return (
+      <div className="app-container">
     <div className="login-container" id="login-container" name="login-containers">
       <h2>Login To Mkditigal</h2>
       User:
@@ -57,6 +58,8 @@ const LoginPage = ({ onLogin }) => {
      autoComplete="off"
      /><br />
       <button ref={buttonRef} onClick={handleLogin}>Login</button>
+    </div>
+      </div>
     </div>
   );
 };
