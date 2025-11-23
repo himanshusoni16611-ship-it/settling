@@ -9,8 +9,9 @@
 body {
   background: whitesmoke;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Lucida Bright Demibold', "Lucida Bright", "Lucida Serif", Georgia, serif;
   padding: 0;
+  margin: 0;
 }
 
 /* Main container that holds everything */
