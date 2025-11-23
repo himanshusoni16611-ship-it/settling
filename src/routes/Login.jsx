@@ -32,7 +32,7 @@ const LoginPage = ({ onLogin }) => {
   return (
       <div className="app-container">
     <div className="login-container" id="login-container" name="login-containers">
-      <h2>Login To Mkditigal</h2>
+      <h2>Login To Mkditigals</h2>
       User:
       <input
         type="text"
