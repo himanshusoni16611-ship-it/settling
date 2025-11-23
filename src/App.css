@@ -6,7 +6,7 @@
 }
 
 body {
-    background: white; /* Changed to pure white */
+    background: white;
     min-height: 100vh;
     font-family: "Lucida Bright", "Lucida Serif", Georgia, "DejaVu Serif", serif;
     font-size: 16px;
@@ -17,36 +17,38 @@ body {
     padding: 0;
     margin: 0;
 }
+
+/* Home page container - UPDATED */
 .homep {
-  background-color: whitesmoke;
-  color: whitesmoke;
+  background-color: white; /* Changed from whitesmoke to white */
+  color: #222; /* Changed from whitesmoke to dark text */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Lighter shadow */
   margin-bottom: 30px;
   position: relative;
   overflow: hidden;
-
 }
 
-/* Marquee container */
+/* Marquee container - UPDATED */
 .marquee {
   white-space: nowrap;
   overflow: hidden;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid #ddd; /* Changed to light gray */
   padding-bottom: 10px;
   margin-bottom: 15px;
   font-weight: 600;
   font-size: 1.1rem;
+  background: white; /* Ensure white background */
 }
 
-/* Marquee text */
+/* Marquee text - UPDATED */
 .marquee p {
   display: inline-block;
   padding-left: 100%;
   animation: marquee-scroll 15s linear infinite;
-  color: #f0f0f0;
+  color: #333; /* Changed to dark color for visibility */
 }
 
 /* Marquee animation */
@@ -55,9 +57,9 @@ body {
   100% { transform: translateX(-100%); }
 }
 
-/* Delete all records container */
+/* Delete all records container - UPDATED */
 .dlt_all_rec {
-  background-color: #4682b4; /* slightly darker blue */
+  background-color: #f8f9fa; /* Light gray instead of blue */
   width: 25vw;
   min-width: 280px;
   height: 30vh;
@@ -66,14 +68,15 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.3);
-  color: whitesmoke;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  color: #333; /* Dark text */
   user-select: none;
   transition: background-color 0.3s ease;
+  border: 1px solid #dee2e6;
 }
 
 .dlt_all_rec:hover {
-  background-color: #356789;
+  background-color: #e9ecef;
   cursor: pointer;
 }
 
@@ -81,21 +84,22 @@ body {
 .dlt_rec {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #ff4c4c;
+  background-color: #dc3545; /* Bootstrap red */
   border: none;
   border-radius: 5px;
-  color: whitesmoke;
+  color: white;
   font-weight: 700;
   font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
 .dlt_rec:hover {
-  background-color: #e04343;
+  background-color: #c82333;
   cursor: pointer;
 }
-.total_users{
-    background-color: #4682b4; /* slightly darker blue */
+
+.total_users {
+  background-color: #f8f9fa; /* Light gray instead of blue */
   width: 25vw;
   min-width: 280px;
   height: 30vh;
@@ -104,8 +108,13 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.3);
-  color: whitesmoke;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  color: #333; /* Dark text */
   user-select: none;
   transition: background-color 0.3s ease;
+  border: 1px solid #dee2e6;
+}
+
+.total_users:hover {
+  background-color: #e9ecef;
 }
