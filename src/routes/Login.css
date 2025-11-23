@@ -18,6 +18,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding: 20px 15px;
 }
 
 /* Login container - now properly positioned for mobile */
@@ -28,9 +29,9 @@ body {
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   text-align: center;
-  width: 90%;
+  width: 100%;
   max-width: 350px;
-  margin: 20px auto;
+  margin: 0 auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   flex: 1;
   display: flex;
@@ -116,18 +117,6 @@ body {
 
 /* ===== MOBILE FIRST STYLES ===== */
 
-/* Default mobile styles (applies to all devices) */
-.app-container {
-  padding: 20px 15px;
-}
-
-.login-container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 40px 25px;
-}
-
 /* Small mobile devices (up to 480px) */
 @media (max-width: 480px) {
   .app-container {
@@ -138,6 +127,7 @@ body {
   .login-container {
     padding: 35px 20px;
     border-radius: 12px;
+    max-width: 100%;
   }
   
   .login-container h2 {
@@ -188,6 +178,76 @@ body {
   }
 }
 
+/* ===== LANDSCAPE MODE FIXES ===== */
+
+/* Landscape mode on mobile - FIXED */
+@media (max-height: 600px) and (max-width: 768px) {
+  .app-container {
+    padding: 5px;
+    justify-content: flex-start;
+    min-height: 100vh;
+  }
+  
+  .login-container {
+    margin-top: 10px;
+    padding: 20px 15px;
+    max-width: 320px; /* Fixed width instead of vw */
+    width: 90%;
+    flex: 0 1 auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .login-container h2 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+  }
+  
+  .login-container input {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .login-container button {
+    padding: 12px;
+    min-height: 44px;
+    margin-top: 5px;
+  }
+  
+  .form-group {
+    margin-bottom: 3px;
+  }
+}
+
+/* Very short landscape screens */
+@media (max-height: 400px) and (max-width: 768px) {
+  .app-container {
+    padding: 2px;
+  }
+  
+  .login-container {
+    padding: 15px 12px;
+    margin-top: 5px;
+    max-width: 300px;
+  }
+  
+  .login-container h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .login-container input {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .login-container button {
+    padding: 10px;
+    min-height: 40px;
+    font-size: 0.9rem;
+  }
+}
+
 /* Tablet devices (769px and above) */
 @media (min-width: 769px) {
   .app-container {
@@ -212,25 +272,6 @@ body {
   .login-container {
     width: 420px;
     padding: 50px 45px;
-  }
-}
-
-/* Landscape mode on mobile */
-@media (max-height: 600px) and (max-width: 768px) {
-  .app-container {
-    padding: 10px;
-    justify-content: flex-start;
-  }
-  
-  .login-container {
-    margin-top: 20px;
-    padding: 25px 20px;
-    width:12vw;
-  }
-  
-  .login-container h2 {
-    margin-bottom: 20px;
-    font-size: 1.3rem;
   }
 }
 
