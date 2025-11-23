@@ -25,46 +25,5 @@ const Home = () => {
   );
 };
 
-const styles = {
-  container: {
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    padding: "40px",
-    maxWidth: "900px",
-    margin: "auto",
-    backgroundColor: "#f8f9fa",
-    color: "#212529",
-    lineHeight: "1.6",
-  },
-  header: {
-    textAlign: "center",
-    marginBottom: "40px",
-  },
-  title: {
-    fontSize: "3rem",
-    color: "#343a40",
-    marginBottom: "10px",
-  },
-  subtitle: {
-    fontSize: "1.25rem",
-    color: "#6c757d",
-  },
-  section: {
-    marginBottom: "40px",
-  },
-  sectionTitle: {
-    fontSize: "1.75rem",
-    marginBottom: "15px",
-    color: "#495057",
-  },
-  text: {
-    fontSize: "1.1rem",
-  },
-  footer: {
-    textAlign: "center",
-    fontSize: "0.9rem",
-    color: "#6c757d",
-    marginTop: "60px",
-  },
-};
 
 export default Home;
