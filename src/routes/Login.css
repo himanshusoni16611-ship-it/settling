@@ -157,8 +157,9 @@ body {
 @media (max-width: 320px) {
   .app-container {
     padding: 10px;
+min-width:20vw;
   }
-  
+
   .login-container {
     padding: 30px 15px;
   }
