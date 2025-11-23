@@ -24,7 +24,7 @@ body {
 
 /* Login container - now properly positioned for mobile */
 .login-container {
-  background: rgba(255, 255, 255, 0.15);
+  background: whitesmoke;
   backdrop-filter: blur(12px);
   padding: 30px 25px;
   border-radius: 16px;
