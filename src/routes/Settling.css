@@ -11,6 +11,9 @@ margin-top: -24px;
 width:97vw;
 height:6vh
 }
+.table-wrapper{
+background-color:white;
+}
 .header-row {
   display: flex;
   gap: 8rem; /* space between items */
