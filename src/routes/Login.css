@@ -19,6 +19,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px 15px;
+  background-color:white;
 }
 
 /* Login container - now properly positioned for mobile */
